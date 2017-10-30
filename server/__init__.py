@@ -4,12 +4,15 @@ import flask_restless
 import flask_admin
 import flask_admin.contrib.sqla
 import uuid
+from os import environ
 
 app = flask.Flask(__name__)
 
 app.secret_key = str(uuid.uuid4())
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+db = environ.get('DB_FILE')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+db
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = flask_sqlalchemy.SQLAlchemy(app)
 
