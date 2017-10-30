@@ -33,3 +33,35 @@ NOTE : Penser a travailler en environnement virtuel avec virtualenv
     * /customers/{customer_id}
       * GET : info sur un client
       * PATCH : Modifie un client
+
+### Pizza
+  * Lister les pizzas
+  * Detail d'une pizza
+  * Ajouter une pizza
+  * Supprimer une pizza
+
+  * OPT : Lister les elements de la pizza
+  * OPT : Creer sa propre pizza
+#### Routes
+  * /pizza
+    * GET : Liste les pizza
+    * POST : Creer une pizza
+  * /pizza/{pizza_id}
+    * GET : Detail d'une pizza
+    * PATCH : Modifie une pizza
+    * DELETE : Supprime une pizza 
+
+### Commandes
+  * Qui a effectué la commande ?
+  * Passer une commande
+  * Valider une commande 
+  * Etre averti d'une nouvelle commande
+#### Routes
+  * /order?[state={state}]
+      * GET : Obtient la liste des commandes
+      * POST : Creer une commande
+  * /order/{order_id}
+      * GET : Info sur la commande
+      * PATCH : Modifie une commande <-- Permet l'annulation
+  * /order/new_order
+      * sse : Permet d'actualiser la vue admin
