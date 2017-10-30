@@ -8,4 +8,8 @@ Pour installer les dependances
 Accès à la page d'administration 
 ``` http://localhost:5000/admin ```
 
+Lancement du server 
+``` python run.py ```
+
+NOTE : Penser a travailler en environnement virtuel avec virtualenv
 
