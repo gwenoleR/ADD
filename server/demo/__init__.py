@@ -7,6 +7,5 @@ class Measurement(db.Model):
     value = db.Column(db.Float)
 
 manager.create_api(Measurement, methods=['GET', 'POST', 'PUT', 'DELETE'])
-print('Measurement')
 
 admin.add_view(ModelView(Measurement, db.session))
