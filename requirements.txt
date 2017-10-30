@@ -2,3 +2,4 @@ Flask
 Flask-Restless
 Flask-Admin
 Flask-SqlAlchemy
+flask-socketio

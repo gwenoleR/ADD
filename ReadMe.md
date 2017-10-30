@@ -63,5 +63,5 @@ NOTE : Penser a travailler en environnement virtuel avec virtualenv
   * /order/{order_id}
       * GET : Info sur la commande
       * PATCH : Modifie une commande <-- Permet l'annulation
-  * /order/new_order
-      * sse : Permet d'actualiser la vue admin
+  * /order
+      * ws : Permet d'actualiser la vue admin

@@ -21,3 +21,4 @@ manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
 admin = flask_admin.Admin(app, name='Pizza App', template_mode='bootstrap3')
 
 ModelView = flask_admin.contrib.sqla.ModelView
+
