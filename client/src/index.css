@@ -8,7 +8,14 @@ body {
 }
 .price {
   float: right;
+  margin-right: 10px;
 }
-#price{
-  color : #000
+.font-black{
+  color : #000;
 }
+.full-button{
+  width: 100%;
+}
+.float-right{
+  float: right;
+} 

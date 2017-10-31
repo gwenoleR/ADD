@@ -10,7 +10,10 @@ import {
     Navbar,
     NavItem,
     Slider,
-    Slide
+    Slide,
+    Button,
+    Icon,
+    Input
 } from 'react-materialize'
 
 class Pizza extends React.Component {
@@ -18,10 +21,42 @@ class Pizza extends React.Component {
         return (
             <Col m={7} s={12} className="pizza">
                 <Card horizontal
-                    header={<CardTitle style={{color : 'black'}} image={this.props.img}><span id='price'>{this.props.price} €</span></CardTitle>}
+                    header={<CardTitle style={{color : 'black'}} className='no-padding' image={this.props.img}><span className='font-black price' >{this.props.price} €</span></CardTitle>}
                     title={this.props.name} 
                 >
                     <p>{this.props.description}</p>
+                    <hr/>
+                    <Row>
+                        <Input className='with-gap font-black' name='size' type='radio' value='medium' label='Medium'/>
+                        <Input className='with-gap font-black' name='size' type='radio' value='large' label='Large' />
+                    </Row>
+
+                    <Button waves='light' className="full-button" style={{marginHorizontal:10}}><Icon medium> add_shopping_cart</Icon></Button>
+                </Card>
+            </Col>
+        );
+
+    }
+}
+
+class PizzaAdmin extends React.Component {
+    render() {
+        return (
+            <Col m={7} s={12} className="pizza">
+                <Card horizontal
+                    header={<CardTitle style={{color : 'black'}} className='no-padding' image={this.props.img}><span className='font-black price' >{this.props.price} €</span></CardTitle>}
+                    title={this.props.name} 
+                >
+                    <p>{this.props.description}</p>
+                    <hr/>
+                    <Row>
+                        <Input className='with-gap font-black' name='size' type='radio' value='medium' label='Medium'/>
+                        <Input className='with-gap font-black' name='size' type='radio' value='large' label='Large' />
+                    </Row>
+
+                    <Button waves='light' className="full-button" style={{marginHorizontal:10}}><Icon medium> add_shopping_cart</Icon></Button>
+                    <Button waves='light' className="full-button" style={{marginHorizontal:10, marginTop : 10}}><Icon medium>edit</Icon></Button>
+                    <Button waves='light' className="full-button red" style={{marginHorizontal:10, marginTop : 10}}><Icon medium>delete</Icon></Button> 
                 </Card>
             </Col>
         );
@@ -34,12 +69,13 @@ class Pizzeria extends React.Component {
         super(props);
 
         this.state = {
-            pizzas: []
+            pizzas: [],
+            admin: false,
         };
     }
 
     _getPizzas() {
-        axios.get('http://localhost:5000/pizzas')
+        axios.get('http://192.168.8.102:5000/pizzas')
             .then((pizzas) => {
                 this.setState({ pizzas: pizzas.data })
             })
@@ -50,23 +86,38 @@ class Pizzeria extends React.Component {
     }
 
     renderPizza(name, image, desc, price) {
-        return <Pizza img={image} name={name} description={desc} price={price} />;
+        return (
+            <Pizza img={image} name={name} description={desc} price={price} />
+        )
+    }
+    renderPizzaAdmin(name, image, desc, price) {
+        return (
+            <PizzaAdmin img={image} name={name} description={desc} price={price} />
+        )
     }
 
     render() {
         //recuperation des data a faire
-
         var pizzas = this.state.pizzas;
         var htmlpizza = [];
-        for (var i = 0; i < pizzas.length; i++) {
-            htmlpizza.push(this.renderPizza(pizzas[i]["pizza_name"], pizzas[i]["pizza_picture"], pizzas[i]["pizza_description"], pizzas[i]["pizza_price"]));
+
+        if(!this.state.admin){
+            for (var i = 0; i < pizzas.length; i++) {
+                htmlpizza.push(this.renderPizza(pizzas[i]["pizza_name"], pizzas[i]["pizza_picture"], pizzas[i]["pizza_description"], pizzas[i]["pizza_price"]));
+            }
         }
+        else{
+            for (var i = 0; i < pizzas.length; i++) {
+                htmlpizza.push(this.renderPizzaAdmin(pizzas[i]["pizza_name"], pizzas[i]["pizza_picture"], pizzas[i]["pizza_description"], pizzas[i]["pizza_price"]));
+            }
+        }
+        
 
         return (
-            <body>
+            <div>
                 <Navbar brand='TornioPizza' right>
-                    <NavItem href='get-started.html'>Menu</NavItem>
-                    <NavItem href='login.html'>Log In</NavItem>
+                    <NavItem href='#'>Menu</NavItem>
+                    <NavItem href='#'>Log In</NavItem>
                 </Navbar>
                 <Slider>
                     <Slide
@@ -93,7 +144,7 @@ class Pizzeria extends React.Component {
                 <Row style={{margin : 70}}>
                     {htmlpizza}
                 </Row>
-            </body>
+            </div>
         );
 
 
