@@ -18,8 +18,8 @@ class Pizza extends React.Component {
         return (
             <Col m={7} s={12} className="pizza">
                 <Card horizontal
-                    header={<CardTitle image={this.props.img}></CardTitle>}
-                    title={this.props.name}
+                    header={<CardTitle style={{color : 'black'}} image={this.props.img}><span id='price'>{this.props.price} €</span></CardTitle>}
+                    title={this.props.name} 
                 >
                     <p>{this.props.description}</p>
                 </Card>
@@ -71,23 +71,26 @@ class Pizzeria extends React.Component {
                 <Slider>
                     <Slide
                         src="assets/images/s1.jpg"
-                        title="This is our big Tagline!">
+                        title="This is our big Tagline!"
+                        style={{color : 'black'}}>
                         Here's our small slogan.
 	                </Slide>
                     <Slide
                         src="/assets/images/s2.jpeg"
                         title="Left aligned Caption"
-                        placement="left">
+                        placement="left"
+                        style={{color : 'black'}}>
                         Here's our small slogan.
 	                </Slide>
                     <Slide
                         src="/assets/images/s3.jpeg"
                         title="Right aligned Caption"
-                        placement="right">
+                        placement="right"
+                        style={{color : 'black'}}>
                         Here's our small slogan.
 	                </Slide>
                 </Slider>
-                <Row>
+                <Row style={{margin : 70}}>
                     {htmlpizza}
                 </Row>
             </body>

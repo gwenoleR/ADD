@@ -9,3 +9,6 @@ body {
 .price {
   float: right;
 }
+#price{
+  color : #000
+}
