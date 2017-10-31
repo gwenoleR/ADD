@@ -3,66 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import axios from 'axios';
 import {
-    Card,
-    CardTitle,
     Col,
     Row,
     Navbar,
     NavItem,
     Slider,
     Slide,
-    Button,
-    Icon,
-    Input
 } from 'react-materialize'
-
-class Pizza extends React.Component {
-    render() {
-        return (
-            <Col m={7} s={12} className="pizza">
-                <Card horizontal
-                    header={<CardTitle style={{color : 'black'}} className='no-padding' image={this.props.img}><span className='font-black price' >{this.props.price} €</span></CardTitle>}
-                    title={this.props.name} 
-                >
-                    <p>{this.props.description}</p>
-                    <hr/>
-                    <Row>
-                        <Input className='with-gap font-black' name='size' type='radio' value='medium' label='Medium'/>
-                        <Input className='with-gap font-black' name='size' type='radio' value='large' label='Large' />
-                    </Row>
-
-                    <Button waves='light' className="full-button" style={{marginHorizontal:10}}><Icon medium> add_shopping_cart</Icon></Button>
-                </Card>
-            </Col>
-        );
-
-    }
-}
-
-class PizzaAdmin extends React.Component {
-    render() {
-        return (
-            <Col m={7} s={12} className="pizza">
-                <Card horizontal
-                    header={<CardTitle style={{color : 'black'}} className='no-padding' image={this.props.img}><span className='font-black price' >{this.props.price} €</span></CardTitle>}
-                    title={this.props.name} 
-                >
-                    <p>{this.props.description}</p>
-                    <hr/>
-                    <Row>
-                        <Input className='with-gap font-black' name='size' type='radio' value='medium' label='Medium'/>
-                        <Input className='with-gap font-black' name='size' type='radio' value='large' label='Large' />
-                    </Row>
-
-                    <Button waves='light' className="full-button" style={{marginHorizontal:10}}><Icon medium> add_shopping_cart</Icon></Button>
-                    <Button waves='light' className="full-button" style={{marginHorizontal:10, marginTop : 10}}><Icon medium>edit</Icon></Button>
-                    <Button waves='light' className="full-button red" style={{marginHorizontal:10, marginTop : 10}}><Icon medium>delete</Icon></Button> 
-                </Card>
-            </Col>
-        );
-
-    }
-}
+import Pizza from './components/Pizza'
+import PizzaAdmin from './components/PizzaAdmin'
 
 class Pizzeria extends React.Component {
     constructor(props) {
@@ -78,6 +27,7 @@ class Pizzeria extends React.Component {
         axios.get('http://192.168.8.102:5000/pizzas')
             .then((pizzas) => {
                 this.setState({ pizzas: pizzas.data })
+                console.log(this.state.pizzas)
             })
     };
 

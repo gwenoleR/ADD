@@ -1,4 +1,4 @@
-from .. import app, db, manager, admin, ModelView
+from .. import app, db, manager, admin, ModelView, flask_login
 import uuid
 import json
 from flask import request, make_response

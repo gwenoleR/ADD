@@ -6,6 +6,7 @@ import flask_admin.contrib.sqla
 import uuid
 from flask_cors import CORS
 from os import environ
+import flask_login
 
 app = flask.Flask(__name__)
 
@@ -14,6 +15,10 @@ app.secret_key = str(uuid.uuid4())
 db = environ.get('DB_FILE')
 
 CORS(app)
+
+login_manager = flask_login.LoginManager()
+
+login_manager.init_app(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+db
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True

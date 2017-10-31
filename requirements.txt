@@ -4,3 +4,4 @@ Flask-Admin
 Flask-SqlAlchemy
 flask-socketio
 flask-cors
+flask-login
