@@ -1,47 +1,106 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-
-var test='[{"pizza_available": true, "pizza_name": "4 Fromages", "pid": "5efc105f-96f2-493a-a643-05d4d2c2b1da", "pizza_description": "Une belle pizza pleine de fromage", "pizza_price": 12.0, "pizza_picture": "test.jpg"}, {"pizza_available": false, "pizza_name": "toDelete", "pid": "", "pizza_description": "delete", "pizza_price": 1.2, "pizza_picture": "test.jpg"}]'
+import axios from 'axios';
+import {
+    Card,
+    CardTitle,
+    Col,
+    Row,
+    Navbar,
+    NavItem,
+    Slider,
+    Slide
+} from 'react-materialize'
 
 class Pizza extends React.Component {
     render() {
         return (
-            <div className="pizza" >
-                <img src={this.props.img} alt={this.props.name} width="300" height="200"/>
-                    <h1><span> {this.props.name}</span ><span className="price"> {this.props.price} $</span></h1>
-                    <div> {this.props.description}</div>
-            </div>
-                );
-                
-      }
-  }
+            <Col m={7} s={12} className="pizza">
+                <Card horizontal
+                    header={<CardTitle image={this.props.img}></CardTitle>}
+                    title={this.props.name}
+                >
+                    <p>{this.props.description}</p>
+                </Card>
+            </Col>
+        );
 
-  class Pizzeria extends React.Component {
+    }
+}
+
+class Pizzeria extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            pizzas: []
+        };
+    }
+
+    _getPizzas() {
+        axios.get('http://localhost:5000/pizzas')
+            .then((pizzas) => {
+                this.setState({ pizzas: pizzas.data })
+            })
+    };
+
+    componentDidMount() {
+        this._getPizzas()
+    }
+
     renderPizza(name, image, desc, price) {
         return <Pizza img={image} name={name} description={desc} price={price} />;
-      }
-      
+    }
+
     render() {
         //recuperation des data a faire
-        console.log(test);
-        var pizzas=JSON.parse(test);
-        console.log(pizzas);
-        var htmlpizza=[];
-        for(var i=0; i<pizzas.length;i++){
+
+        var pizzas = this.state.pizzas;
+        var htmlpizza = [];
+        for (var i = 0; i < pizzas.length; i++) {
             htmlpizza.push(this.renderPizza(pizzas[i]["pizza_name"], pizzas[i]["pizza_picture"], pizzas[i]["pizza_description"], pizzas[i]["pizza_price"]));
         }
-        // a mettre dans une boucle pour chaque pizza recupéré du server
-      return htmlpizza;
-        
-    
-    }
-  }
 
-  
-  // ========================================
-  
-  ReactDOM.render(
+        return (
+            <body>
+                <Navbar brand='TornioPizza' right>
+                    <NavItem href='get-started.html'>Menu</NavItem>
+                    <NavItem href='login.html'>Log In</NavItem>
+                </Navbar>
+                <Slider>
+                    <Slide
+                        src="assets/images/s1.jpg"
+                        title="This is our big Tagline!">
+                        Here's our small slogan.
+	                </Slide>
+                    <Slide
+                        src="/assets/images/s2.jpeg"
+                        title="Left aligned Caption"
+                        placement="left">
+                        Here's our small slogan.
+	                </Slide>
+                    <Slide
+                        src="/assets/images/s3.jpeg"
+                        title="Right aligned Caption"
+                        placement="right">
+                        Here's our small slogan.
+	                </Slide>
+                </Slider>
+                <Row>
+                    {htmlpizza}
+                </Row>
+            </body>
+        );
+
+
+    }
+}
+
+
+// ========================================
+
+ReactDOM.render(
     <Pizzeria />,
     document.getElementById('root')
-  );
+);

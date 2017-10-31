@@ -43,10 +43,10 @@ NOTE : Penser a travailler en environnement virtuel avec virtualenv
   * OPT : Lister les elements de la pizza
   * OPT : Creer sa propre pizza
 #### Routes
-  * /pizza
+  * /pizzas
     * GET : Liste les pizza
     * POST : Creer une pizza
-  * /pizza/{pizza_id}
+  * /pizzas/{pizza_id}
     * GET : Detail d'une pizza
     * PATCH : Modifie une pizza
     * DELETE : Supprime une pizza 
