@@ -2,9 +2,10 @@ from server import app, db
 
 import server.demo # load it!##
 import server.customers
+import server.login
 import server.pizzas
 import server.orders
-import server.login
+
 
 from flask_socketio import SocketIO, emit
 

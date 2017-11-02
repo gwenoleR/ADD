@@ -10,19 +10,23 @@ class Customers(db.Model):
     customer_lastName = db.Column(db.String(120), nullable=False)
     customer_email = db.Column(db.String(120), unique=True, nullable=False)
     customer_password = db.Column(db.String(255), nullable=False)
+    customer_address = db.Column(db.String, nullable=False)
+    customer_city = db.Column(db.String, nullable=False)
 
 
-    def create(self, customer_name, customer_lastName, customer_email, customer_password):
+    def create(self, customer_name, customer_lastName, customer_email, customer_password,customer_address,customer_city):
         self.customer_name = customer_name
         self.customer_lastName = customer_lastName
         self.customer_email = customer_email
         self.customer_password = customer_password
+        self.customer_address = customer_address
+        self.customer_city = customer_city
         self.cid = str(uuid.uuid4())
 
         return self
 
     def as_dict(self):
-        return {'cid' : self.cid, 'customer_name' : self.customer_name, 'customer_lastName' : self.customer_lastName, 'customer_email' : self.customer_email, 'customer_password' : self.customer_password}
+        return {'cid' : self.cid, 'customer_name' : self.customer_name, 'customer_lastName' : self.customer_lastName, 'customer_email' : self.customer_email, 'customer_password' : self.customer_password, 'customer_address' : self.customer_address, 'customer_city' : self.customer_city}
 
 
 
@@ -50,10 +54,14 @@ def addcustomer():
     if not 'customer_email' in req  or not req['customer_email']:
         return make_response('Email is required',401)
     if not 'customer_password' in req  or not req['customer_password']:
-        return make_response('Phone is required',401)
+        return make_response('Password is required',401)
+    if not 'customer_address' in req  or not req['customer_address']:
+        return make_response('customer_address is required',401)
+    if not 'customer_city' in req  or not req['customer_city']:
+        return make_response('customer_city is required',401)
     
     customer = Customers()
-    customer = customer.create(req['customer_name'],req['customer_lastName'],req['customer_email'],req['customer_password'])
+    customer = customer.create(req['customer_name'],req['customer_lastName'],req['customer_email'],req['customer_password'],req['customer_address'], req['customer_city'])
     try:
         db.session.add(customer)
         db.session.commit()
@@ -71,6 +79,8 @@ def getCustomerById(cid):
 
     resp = make_response(json.dumps(customer.as_dict()), 200)
     return resp
+
+
 
 @app.route('/customers/<string:cid>', methods=['PATCH'])
 def editCustomerById(cid):
@@ -92,6 +102,12 @@ def editCustomerById(cid):
         updated = True
     if 'customer_password' in req:
         customer.customer_password = req['customer_password']
+        updated = True
+    if 'customer_address' in req:
+        customer.customer_address = req['customer_address']
+        updated = True
+    if 'customer_city' in req:
+        customer.customer_city = req['customer_city']
         updated = True
 
     if updated:

@@ -4,6 +4,7 @@ import json
 import datetime
 from sseclient import SSEClient
 from flask import request, make_response
+from server.login import requires_connected
 
 
 class Orders(db.Model):
@@ -31,6 +32,7 @@ manager.create_api(Orders, methods=['GET', 'POST'])
 admin.add_view(ModelView(Orders, db.session))
 
 @app.route('/orders', methods=['GET'])
+@requires_connected
 def getOrders():
     orders = []
     for o in Orders.query.all():

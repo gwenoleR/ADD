@@ -22,3 +22,14 @@ body {
 .full-width{
   width: 100%;
 }
+img{
+  width: 100%;
+}
+.fb{
+  margin-bottom: 10px;
+  background-color: #4267b2;
+}
+.container{
+  width: 50%;
+  margin-left: 25%;
+}
