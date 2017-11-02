@@ -10,29 +10,28 @@ from server.login import requires_connected
 class Orders(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     oid = db.Column(db.String(40), server_default=str(uuid.uuid4()),unique=True, nullable=False)
-    customer_id = db.Column(db.String(40), nullable=False)
+    customer_username = db.Column(db.String(40), nullable=False)
     order_pizzas = db.Column(db.String, nullable=False)
     order_state = db.Column(db.String(30), nullable=False, server_default='new')
     order_date = db.Column(db.String, nullable=False)
 
-    def create(self, customer_id, order_pizzas, order_state):
-        self.customer_id = customer_id
+    def create(self, customer_username, order_pizzas, order_state):
+        self.customer_username = customer_username
         self.order_pizzas = order_pizzas
         self.oid = str(uuid.uuid4())
-        self.order_date = datetime.datetime.now()
+        self.order_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
         return self
 
 
     def as_dict(self):
-        return {'oid' : self.oid, 'customer_id' : self.customer_id, 'order_pizzas' : self.order_pizzas, 'order_state' : self.order_state, 'order_date' : self.order_date}
+        return {'oid' : self.oid, 'customer_username' : self.customer_username, 'order_pizzas' : self.order_pizzas, 'order_state' : self.order_state, 'order_date' : self.order_date}
 
 manager.create_api(Orders, methods=['GET', 'POST'])
 
 admin.add_view(ModelView(Orders, db.session))
 
 @app.route('/orders', methods=['GET'])
-@requires_connected
 def getOrders():
     orders = []
     for o in Orders.query.all():
@@ -44,17 +43,15 @@ def getOrders():
 def addOrder():
     req = request.get_json()
 
-    if not 'customer_id' in req or not req['customer_id']:
-        return make_response('customer_id is required',401)
+    if not 'customer_username' in req or not req['customer_username']:
+        return make_response('customer_username is required',401)
     if not 'order_pizzas' in req or not req['order_pizzas']:
         return make_response('order_pizzas is required',401)
     if not 'order_state' in req  or not req['order_state']:
         req['order_state'] = "new"
     
-    print(req['customer_id'],req['order_pizzas'],req['order_state'])
-    
     order = Orders()
-    order = order.create(req['customer_id'],req['order_pizzas'],req['order_state'])
+    order = order.create(req['customer_username'],req['order_pizzas'],req['order_state'])
     try:
         db.session.add(order)
         db.session.commit()
@@ -75,7 +72,7 @@ def getOrdersById(oid):
 
 
 @app.route('/orders/<string:oid>', methods=['PATCH'])
-def editOrderById(pid):
+def editOrderById(oid):
     req = request.get_json()
 
     order = Orders.query.filter_by(oid=oid).first()

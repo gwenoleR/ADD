@@ -2,6 +2,8 @@ import React from 'react';
 import '../index.css';
 import axios from 'axios';
 import cookie from 'react-cookies';
+import io from 'socket.io-client';
+import Basket from './Basket';
 
 import {
     Row,
@@ -12,9 +14,12 @@ import {
     Slide,
     Button,
     Input,
+    Icon,
 } from 'react-materialize'
 import Pizza from './Pizza'
 import PizzaAdmin from './PizzaAdmin'
+
+const socket = io('http://localhost:5000/order');
 
 export default class Pizzeria extends React.Component {
     constructor(props) {
@@ -28,7 +33,10 @@ export default class Pizzeria extends React.Component {
             password: "",
             isAuth: false,
             username : "",
-            token : ""
+            token : "",
+            basket : [],
+            basketIsVisible : false,
+            totalPrice : 0
         };
     }
 
@@ -36,40 +44,21 @@ export default class Pizzeria extends React.Component {
         axios.get('http://192.168.8.102:5000/pizzas')
             .then((pizzas) => {
                 this.setState({ pizzas: pizzas.data })
-                console.log(this.state.pizzas)
             })
     };
 
     componentDidMount() {
         this._getPizzas()
         var cookies = cookie.load('user')
-        console.log(cookies)
-        this.setState({username : cookies.username, token : cookies.token}, ()=>{
-            if(this.state.username !== "" && this.state.token !== ""){
-                this.setState({isAuth : true})
 
-                axios({
-                    method: 'get',
-                    url: 'http://192.168.8.102:5000/orders',
-                    auth: {
-                        username: this.state.username,
-                        password: this.state.token
-                    }
-                }).then((data)=>{console.log(data)})
-                .catch((error)=>{console.log(error)})
-            }
-        })
-    }
-
-    renderPizza(name, image, desc, price) {
-        return (
-            <Pizza img={image} name={name} description={desc} price={price} />
-        )
-    }
-    renderPizzaAdmin(name, image, desc, price) {
-        return (
-            <PizzaAdmin img={image} name={name} description={desc} price={price} />
-        )
+        if (typeof cookies !== 'undefined'){
+            this.setState({username : cookies.username, token : cookies.token}, ()=>{
+                if(this.state.username !== "" && this.state.token !== ""){
+                    this.setState({isAuth : true})
+                }
+            })
+        }
+        
     }
 
     loginPress() {
@@ -101,6 +90,42 @@ export default class Pizzeria extends React.Component {
             })
     }
 
+    addBasket(pizza){
+        this.state.basket.push(pizza)
+        var basket = this.state.basket
+        this.totalBasketPrice()
+        this.setState({basket : basket})
+
+
+    }
+
+    order(){
+        console.log(this.state.basket)
+        var order = {'customer_username' : this.state.username,'order_pizzas' : JSON.stringify(this.state.basket)}
+
+        axios({
+            url : 'http://192.168.8.102:5000/orders',
+            method : 'post',
+            data : order
+        }).then((data)=>{
+            this.setState({basketIsVisible : !this.state.basketIsVisible})
+            this.setState({basket : []})
+            socket.emit('new_order')
+        })
+        .catch((error)=>{console.log(error)})
+
+        console.log(order)
+    }
+
+    totalBasketPrice(){
+        var total =0;
+        this.state.basket.forEach(function(article) {
+            total += article.pizza_price
+        }, this);
+
+        this.setState({totalPrice : total})
+    }
+
     render() {
         var pizzas = this.state.pizzas;
         var htmlpizza = [];
@@ -108,22 +133,49 @@ export default class Pizzeria extends React.Component {
 
         if (!this.state.admin) {
             for (i = 0; i < pizzas.length; i++) {
-                htmlpizza.push(this.renderPizza(pizzas[i]["pizza_name"], pizzas[i]["pizza_picture"], pizzas[i]["pizza_description"], pizzas[i]["pizza_price"]));
+                htmlpizza.push(
+                    <Pizza 
+                        img={pizzas[i]["pizza_picture"]} 
+                        name={pizzas[i]["pizza_name"]} 
+                        description={pizzas[i]["pizza_description"]} 
+                        price={pizzas[i]["pizza_price"]} 
+                        id={pizzas[i]['pid']}
+                        basket_press={this.addBasket.bind(this, pizzas[i])}
+
+                    />
+                )
             }
         }
         else {
             for (i = 0; i < pizzas.length; i++) {
-                htmlpizza.push(this.renderPizzaAdmin(pizzas[i]["pizza_name"], pizzas[i]["pizza_picture"], pizzas[i]["pizza_description"], pizzas[i]["pizza_price"]));
-            }
+                htmlpizza.push(
+                    <PizzaAdmin 
+                        img={pizzas[i]["pizza_picture"]} 
+                        name={pizzas[i]["pizza_name"]} 
+                        description={pizzas[i]["pizza_description"]} 
+                        price={pizzas[i]["pizza_price"]} 
+                        id={pizzas[i]['pid']}
+                    />
+                )}
         }
 
 
         return (
             <div>
                 <Navbar brand='TornioPizza' right>
+                    {this.state.admin ? <NavItem href='/orders'>Orders Lists</NavItem> : <div></div>}
+                    {this.state.isAuth ? <NavItem href='#' onClick={()=>{this.setState({basketIsVisible : !this.state.basketIsVisible})}}><div><Icon medium left>shopping_cart</Icon> {this.state.basket.length}</div> </NavItem> : <div></div>}                    
                     <NavItem href='#'>Menu</NavItem>
                     {this.state.isAuth ? <NavItem href='/' >Hi {this.state.username}</NavItem> : <NavItem href='#' onClick={() => { this.setState({ childVisible: !this.state.childVisible }) }}>Log In</NavItem>}
                 </Navbar>
+                {this.state.basketIsVisible ?
+                <Basket 
+                    basket={this.state.basket}
+                    order={this.order.bind(this)}
+                    totalPrice={this.state.totalPrice}
+                />
+                : <div></div>
+                }
                 {
                     this.state.childVisible
                         ? <div>
@@ -160,9 +212,10 @@ export default class Pizzeria extends React.Component {
                         Here's our small slogan.
 	                </Slide>
                 </Slider>
-                <Row style={{ margin: 70 }}>
+                <Row className='pizza-list'>
                     {htmlpizza}
                 </Row>
+                
             </div>
         );
 

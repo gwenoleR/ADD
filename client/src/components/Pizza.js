@@ -3,10 +3,8 @@ import {
     Card,
     CardTitle,
     Col,
-    Row,
     Button,
     Icon,
-    Input
 } from 'react-materialize'
 
 export default class Pizza extends React.Component {
@@ -19,12 +17,12 @@ export default class Pizza extends React.Component {
                 >
                     <p>{this.props.description}</p>
                     <hr/>
-                    <Row>
+                    {/* <Row>
                         <Input className='with-gap font-black' name='size' type='radio' value='medium' label='Medium'/>
                         <Input className='with-gap font-black' name='size' type='radio' value='large' label='Large' />
-                    </Row>
+                    </Row> */}
 
-                    <Button waves='light' className="full-button" style={{marginHorizontal:10}}><Icon medium> add_shopping_cart</Icon></Button>
+                    <Button waves='light' className="full-button" style={{marginHorizontal:10}} onClick={this.props.basket_press}><Icon medium> add_shopping_cart</Icon></Button>
                 </Card>
             </Col>
         );

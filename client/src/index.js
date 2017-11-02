@@ -2,11 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Pizzeria from './components/Pizzeria'
 import Signup from './components/Signup'
-
+import OrderList from './components/OrderList'
 import {
     BrowserRouter as Router,
     Route,
-    Link
 } from 'react-router-dom'
 
 class MainNavigation extends React.Component {
@@ -16,6 +15,7 @@ class MainNavigation extends React.Component {
                 <div>
                     <Route exact path="/" component={Pizzeria} />
                     <Route path="/signup" component={Signup} />
+                    <Route path="/orders" component={OrderList} />
                 </div>
             </Router>
         )

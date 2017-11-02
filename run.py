@@ -15,7 +15,12 @@ db.create_all()
 socketio = SocketIO(app)
 @socketio.on('new_order', namespace='/order')
 def newOrder():
-    emit('new_order')
+    emit('order_received', {}, broadcast=True)
+    print('socket new_order received')
+
+@socketio.on('order_received', namespace='/order')
+def order():
+  print('order_received')
 
 
 if __name__ == "__main__":

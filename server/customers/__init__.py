@@ -70,9 +70,9 @@ def addcustomer():
 
     return make_response('Created', 201)
 
-@app.route('/customers/<string:cid>', methods=['GET'])
-def getCustomerById(cid):
-    customer = Customers.query.filter_by(cid = cid).first()
+@app.route('/customers/<string:username>', methods=['GET'])
+def getCustomerById(username):
+    customer = Customers.query.filter_by(customer_email = username).first()
 
     if customer is None:
         return make_response('Not found', 404)
