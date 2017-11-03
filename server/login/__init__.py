@@ -12,12 +12,14 @@ class Connected(db.Model):
     connected_token = db.Column(db.String, nullable=False)
     connected_connection_time = db.Column(db.String, server_default=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), nullable=False)
     connected_isActive = db.Column(db.Boolean)
+    connected_isAdmin = db.Column(db.Boolean)
 
     def create(self, connected_username):
         self.connected_username = connected_username
         self.connected_token = str(uuid.uuid4())
         self.connected_connection_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self.connected_isActive = True
+        self.connected_isActive = False
 
         return self
 
@@ -47,6 +49,8 @@ def check_auth(username, password):
     if username == customer.customer_email and password == customer.customer_password:
         connect = Connected()
         connect = connect.create(username)
+        if customer.customer_admin :
+            connect.connected_isAdmin = True
         try:
             db.session.add(connect)
             db.session.commit()
@@ -81,6 +85,9 @@ def secret_page():
 def login():
     print(request.authorization.username)
     connect = Connected.query.filter_by(connected_username = request.authorization.username).first()
+    if connect.connected_isAdmin:
+        return make_response(json.dumps({'username' : request.authorization.username, 'token' : connect.connected_token, 'isAdmin' : True}),200)
+
     return make_response(json.dumps({'username' : request.authorization.username, 'token' : connect.connected_token}),200)
 
 def check_token(username, token):

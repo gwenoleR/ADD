@@ -12,6 +12,7 @@ class Customers(db.Model):
     customer_password = db.Column(db.String(255), nullable=False)
     customer_address = db.Column(db.String, nullable=False)
     customer_city = db.Column(db.String, nullable=False)
+    customer_admin = db.Column(db.Boolean, nullable=False)
 
 
     def create(self, customer_name, customer_lastName, customer_email, customer_password,customer_address,customer_city):
@@ -22,6 +23,7 @@ class Customers(db.Model):
         self.customer_address = customer_address
         self.customer_city = customer_city
         self.cid = str(uuid.uuid4())
+        self.customer_admin = False
 
         return self
 
@@ -108,6 +110,9 @@ def editCustomerById(cid):
         updated = True
     if 'customer_city' in req:
         customer.customer_city = req['customer_city']
+        updated = True
+    if 'customer_admin' in req:
+        customer.customer_city = req['customer_admin']
         updated = True
 
     if updated:
