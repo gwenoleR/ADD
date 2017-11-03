@@ -68,7 +68,7 @@ export default class OrderList extends React.Component {
 
         axios({
             method: 'post',
-            url: 'http://192.168.8.102:5000/login',
+            url: 'http://localhost:5000/login',
             auth: {
                 username: this.state.email,
                 password: this.state.password
@@ -108,13 +108,34 @@ export default class OrderList extends React.Component {
                     password : this.state.password
                 }
             }).then((data)=>{
+                var order_state = ''
+                console.log(order.order_state)
+                switch (order.order_state){
+                    case 'new':
+                        order_state = 'new_order'
+                        break;
+                    case 'prepa':
+                        order_state = 'prepa_order'
+                        break;
+                    case 'livraison':
+                        order_state = 'livraison_order';
+                        break;
+                    case 'livre':
+                        order_state = 'livre_order';
+                        break;
+                    default:
+                        order_state = 'new'
+                        break;
+                }
+                console.log()
                 htmlOrders.push(
-                <div className={"order "+side}>
+                <div className={"order "+side + " " + order_state+"_before"}>
                     <Order
                         date={order.order_date}
                         pizzas={order.order_pizzas}
                         address={data.data.customer_address}
                         city={data.data.customer_city}
+                        state={order_state}
                     />
                 </div>)
                 side === 'order-right' ? side = 'order-left' : side = 'order-right'
@@ -131,7 +152,7 @@ export default class OrderList extends React.Component {
             <div>
                 <Navbar brand='TornioPizza' right>
                     <NavItem href='/'>Menu</NavItem>
-                    {this.state.isAuth ? <NavItem href='#' >Hi User</NavItem> : <NavItem href='#' onClick={() => { this.setState({ childVisible: !this.state.childVisible }) }}>Log In</NavItem>}
+                    {this.state.isAuth ? <NavItem href='#' >Hi {this.state.username}</NavItem> : <NavItem href='#' onClick={() => { this.setState({ childVisible: !this.state.childVisible }) }}>Log In</NavItem>}
                 </Navbar>
                 {
                     this.state.childVisible

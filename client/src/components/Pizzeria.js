@@ -41,7 +41,7 @@ export default class Pizzeria extends React.Component {
     }
 
     _getPizzas() {
-        axios.get('http://192.168.8.102:5000/pizzas')
+        axios.get('http://localhost:5000/pizzas')
             .then((pizzas) => {
                 this.setState({ pizzas: pizzas.data })
             })
@@ -67,7 +67,7 @@ export default class Pizzeria extends React.Component {
 
         axios({
             method: 'post',
-            url: 'http://192.168.8.102:5000/login',
+            url: 'http://localhost:5000/login',
             auth: {
                 username: this.state.email,
                 password: this.state.password
@@ -104,7 +104,7 @@ export default class Pizzeria extends React.Component {
         var order = {'customer_username' : this.state.username,'order_pizzas' : JSON.stringify(this.state.basket)}
 
         axios({
-            url : 'http://192.168.8.102:5000/orders',
+            url : 'http://localhost:5000/orders',
             method : 'post',
             data : order
         }).then((data)=>{

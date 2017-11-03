@@ -29,7 +29,7 @@ export default class Signup extends React.Component {
 
         axios({
             method: 'post',
-            url: 'http://192.168.8.102:5000/login',
+            url: 'http://localhost:5000/login',
             auth: {
                 username: this.state.email,
                 password: this.state.password
@@ -50,7 +50,7 @@ export default class Signup extends React.Component {
 
     signup(){
         console.log('coucou?')
-        axios.post('http://192.168.8.102:5000/customers',{
+        axios.post('http://localhost:5000/customers',{
             customer_name : this.state.name,
             customer_lastName : this.state.lastName,
             customer_email : this.state.email,

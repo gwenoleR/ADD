@@ -4,11 +4,6 @@ body {
   font-family: sans-serif;
   /* font-size: 20px; */
 }
-/* @media only screen and (min-width: 992px){
-body {
-    font-size: 18px;
-}
-} */
 .pizza {
   max-width: 300px;
 }
@@ -83,6 +78,11 @@ nav ul a {
 /*    Timeline    */
 * {
   box-sizing: border-box;
+}
+
+
+.small-h4{
+  font-size : 20px;
 }
 
 /* The actual timeline (the vertical ruler) */
@@ -177,6 +177,70 @@ nav ul a {
   border-radius: 6px;
 }
 
+.order-right.new_order_before::before{
+  border: medium solid #ee6e73;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent #ee6e73 transparent transparent;
+}
+
+.order-right.prepa_order_before::before{
+  border: medium solid #4db6ac;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent #4db6ac transparent transparent;
+}
+
+.order-right.livraison_order_before::before{
+  border: medium solid #ffe082;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent #ffe082 transparent transparent;
+}
+
+.order-right.livre_order_before::before{
+  border: medium solid #b0bec5;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent #b0bec5 transparent transparent;
+}
+
+.order-left.new_order_before::before{
+  border: medium solid #ee6e73;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent #ee6e73;
+}
+
+.order-left.prepa_order_before::before{
+  border: medium solid #4db6ac;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent #4db6ac;
+}
+
+.order-left.livraison_order_before::before{
+  border: medium solid #ffe082;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent #ffe082;
+}
+
+.order-left.livre_order_before::before{
+  border: medium solid #b0bec5;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent #b0bec5;
+}
+
+.new_order{
+  background-color: #ee6e73;
+}
+
+.prepa_order{
+  background-color: #4db6ac;
+}
+
+.livraison_order{
+  background-color: #ffe082;
+}
+
+.livre_order{
+  background-color: #b0bec5;
+}
+
 /* Media queries - Responsive timeline on screens less than 600px wide */
 @media all and (max-width: 990px) {
   .container{
@@ -203,9 +267,33 @@ nav ul a {
     border-color: transparent #ee6e73 transparent transparent;
   }
 
+  .order-left.new_order_before::before{
+    border: medium solid #ee6e73;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent #ee6e73 transparent transparent ;
+  }
+  
+  .order-left.prepa_order_before::before{
+    border: medium solid #4db6ac;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent #4db6ac transparent transparent ;
+  }
+  
+  .order-left.livraison_order_before::before{
+    border: medium solid #ffe082;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent #ffe082 transparent transparent ;
+  }
+  
+  .order-left.livre_order_before::before{
+    border: medium solid #b0bec5;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent #b0bec5 transparent transparent ;
+  }
+
 /* Make sure all circles are at the same spot */
   .order-left::after, .order-right::after {
-    left: 15px;
+    left: 18px;
   }
 
 /* Make all right containers behave like the left ones */
