@@ -86,7 +86,7 @@ def getCustomerById(username):
 def editCustomerById(cid):
     req = request.get_json()
 
-    customer = Customers.query.filter_by(cid=cid).first()
+    customer = Customers.query.filter_by(customer_email=cid).first()
     if customer is None:
         return make_response('Not found',404)
 
@@ -95,7 +95,7 @@ def editCustomerById(cid):
         customer.customer_name = req['customer_name']
         updated = True
     if 'customer_lastName' in req:
-        customer.customer_lastName = req['customer_name']
+        customer.customer_lastName = req['customer_lastName']
         updated = True
     if 'customer_email' in req:
         customer.customer_email = req['customer_email']

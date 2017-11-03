@@ -78,7 +78,7 @@ export default class Pizzeria extends React.Component {
 
                 cookie.save('user', {'username':data.data.username, 'token': data.data.token})
 
-                this.setState({ childVisible: false, isAuth: true })
+                this.setState({ childVisible: false, isAuth: true, username : data.data.username, token : data.data.token })
 
             })
             .catch((error) => {

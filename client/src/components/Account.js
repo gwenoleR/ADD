@@ -4,6 +4,7 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import {
     Col,
+    Row,
     Navbar,
     NavItem,
     Button,
@@ -22,7 +23,8 @@ export default class Account extends React.Component {
             lastName:'',
             email: '',
             adress: '',
-            city : ''
+            city : '',
+            change : false,
         };
     }
 
@@ -59,6 +61,29 @@ export default class Account extends React.Component {
         }
         
     }
+    edit(){
+        axios({
+            method : 'patch',
+            url : 'http://localhost:5000/customers/'+this.state.username,
+            auth : {
+                username : this.state.username,
+                password : this.state.token
+            },
+            data : {
+                customer_name :this.state.name,
+                customer_lastName: this.state.lastName ,
+                customer_email: this.state.email ,
+                customer_adress: this.state.adress ,
+                customer_city : this.state.city
+            }
+        }).then((data)=>{
+            this.getUserInfo()
+            this.setState({change : false})
+        })
+    }
+    logOut(){
+        cookie.remove('user')
+    }
     render(){
         return(
             <div>
@@ -68,17 +93,25 @@ export default class Account extends React.Component {
                 </Navbar>
                 <div className='container'>
                     <h1>My account</h1>
-                    <Col>
-                        <Input type='text' placeholder='Name' onChange={(change)=>{this.setState({name : change.target.value})}}/>
-                        <Input type='text' placeholder='Last name' onChange={(change)=>{this.setState({lastName : change.target.value})}}/>
-                        <Input type='text' placeholder='Address' onChange={(change)=>{this.setState({address : change.target.value})}}/>
-                        <Input type='text' placeholder='City' onChange={(change)=>{this.setState({city : change.target.value})}}/>
-                        <Input type='email' placeholder='Email' onChange={(change)=>{this.setState({email : change.target.value})}}/>
-                        <Input type='password' placeholder='Password' onChange={(change)=>{this.setState({password : change.target.value})}}/>
-                        {/* <Button onClick={this.signup.bind(this)}>Sign up</Button> */}
+                    { this.state.change ? 
+                    <Col style={{marginLeft : 20, marginRight : 20}}>
+                        <h5>Name</h5>
+                        <Input type='text' placeholder='Name' onChange={(change)=>{this.setState({name : change.target.value})}} value={this.state.name}/>
+                        <h5>Last Name</h5>
+                        <Input type='text' placeholder='Last name' onChange={(change)=>{this.setState({lastName : change.target.value})}} value={this.state.lastName}/>
+                        <h5>Address</h5>
+                        <Input type='text' placeholder='Address' onChange={(change)=>{this.setState({address : change.target.value})}} value={this.state.adress}/>
+                        <h5>City</h5>
+                        <Input type='text' placeholder='City' onChange={(change)=>{this.setState({city : change.target.value})}} value={this.state.city}/>
+                        <h5>Email</h5>
+                        <Input type='email' placeholder='Email' onChange={(change)=>{this.setState({email : change.target.value})}} value={this.state.email}/>
+                        <Row>
+                            <Button onClick={()=>this.setState({change : false})}>Cancel</Button>
+                            <Button style={{marginLeft : 20}} onClick={this.edit.bind(this)}>Save change</Button>
+                        </Row>
 
-                    </Col>
-                    <Col>
+                    </Col> :
+                    <Col style={{marginLeft : 20, marginRight : 20}}>
                         <h5>Name</h5>
                         <p>{this.state.name}</p>
                         <h5>Last Name</h5>
@@ -89,7 +122,11 @@ export default class Account extends React.Component {
                         <p>{this.state.city}</p>
                         <h5>Email</h5>
                         <p>{this.state.email}</p>
+                        
+                        <Button onClick={()=>this.setState({change : true})}>Edit</Button>
+                        <Button className='red right' onClick={this.logOut.bind(this)}>Log out</Button>
                     </Col>
+                    }
                 </div>
             </div>
         )
