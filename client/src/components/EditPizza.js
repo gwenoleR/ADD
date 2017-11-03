@@ -1,10 +1,13 @@
 import React from 'react';
 import axios from 'axios';
+
 import {
     Input,
     Button
 } from 'react-materialize';
 import cookie from 'react-cookies';
+
+const base_url = window.location.hostname;
 
 export default class EditPizza extends React.Component{
     constructor(props){
@@ -56,7 +59,7 @@ export default class EditPizza extends React.Component{
         console.log('create')
         axios({
             method : 'patch',
-            url : 'http://localhost:5000/pizzas/'+this.props.pid,
+            url : 'http://'+base_url+':5000/pizzas/'+this.props.pid,
             data : {
                 "pizza_name" : this.state.name,
                 "pizza_price" : this.state.price,

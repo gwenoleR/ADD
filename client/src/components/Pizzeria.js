@@ -21,7 +21,8 @@ import {
 import Pizza from './Pizza'
 import PizzaAdmin from './PizzaAdmin'
 
-const socket = io('http://localhost:5000/order');
+const base_url = window.location.hostname;
+const socket = io('http://'+base_url+':5000/order');
 
 export default class Pizzeria extends React.Component {
     constructor(props) {
@@ -47,7 +48,7 @@ export default class Pizzeria extends React.Component {
     }
 
     _getPizzas() {
-        axios.get('http://localhost:5000/pizzas')
+        axios.get('http://'+base_url+':5000/pizzas')
             .then((pizzas) => {
                 this.setState({ pizzas: pizzas.data })
             })
@@ -62,6 +63,9 @@ export default class Pizzeria extends React.Component {
                 if(this.state.username !== "" && this.state.token !== ""){
                     this.setState({isAuth : true})
                 }
+                if(cookies.admin !== 'undefined'){
+                    this.setState({admin : true})
+                }
             })
         }
         
@@ -73,7 +77,7 @@ export default class Pizzeria extends React.Component {
 
         axios({
             method: 'post',
-            url: 'http://localhost:5000/login',
+            url: 'http://'+base_url+':5000/login',
             auth: {
                 username: this.state.email,
                 password: this.state.password
@@ -88,6 +92,8 @@ export default class Pizzeria extends React.Component {
 
                 if(data.data.isAdmin !== 'undefined'){
                     this.setState({admin : data.data.isAdmin})
+                    cookie.save('user', {'username':data.data.username, 'token': data.data.token, 'admin' : true})
+                    
                 }
 
             })
@@ -114,7 +120,7 @@ export default class Pizzeria extends React.Component {
         var order = {'customer_username' : this.state.username,'order_pizzas' : JSON.stringify(this.state.basket)}
 
         axios({
-            url : 'http://localhost:5000/orders',
+            url : 'http://'+base_url+':5000/orders',
             method : 'post',
             data : order
         }).then((data)=>{
@@ -138,7 +144,7 @@ export default class Pizzeria extends React.Component {
 
     deletePizza(pizza){
         axios({
-            url : 'http://localhost:5000/pizzas/'+pizza.pid,
+            url : 'http://'+base_url+':5000/pizzas/'+pizza.pid,
             method : 'delete'
         }).then((data)=>{
             this._getPizzas()

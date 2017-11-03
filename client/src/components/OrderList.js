@@ -3,6 +3,7 @@ import '../index.css';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import io from 'socket.io-client';
+
 import {
     Col,
     Navbar,
@@ -12,7 +13,9 @@ import {
 } from 'react-materialize'
 import Order from './Order';
 
-const socket = io('http://localhost:5000/order');
+const base_url = window.location.hostname;
+const socket = io('http://'+base_url+':5000/order');
+
 
 export default class OrderList extends React.Component {
     constructor(props) {
@@ -29,7 +32,7 @@ export default class OrderList extends React.Component {
 
     getOrders(){
         axios({
-            url : 'http://localhost:5000/orders',
+            url : 'http://'+base_url+':5000/orders',
             method : 'get',
             auth : {
                 username : this.state.username,
@@ -68,7 +71,7 @@ export default class OrderList extends React.Component {
 
         axios({
             method: 'post',
-            url: 'http://localhost:5000/login',
+            url: 'http://'+base_url+':5000/login',
             auth: {
                 username: this.state.email,
                 password: this.state.password
@@ -101,7 +104,7 @@ export default class OrderList extends React.Component {
             var customer_username = order.customer_username
 
             axios({
-                url : 'http://localhost:5000/customers/'+customer_username,
+                url : 'http://'+base_url+':5000/customers/'+customer_username,
                 method : 'get',
                 auth : {
                     username : this.state.username,

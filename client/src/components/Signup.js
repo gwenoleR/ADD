@@ -1,6 +1,7 @@
 import React from 'react';
 import '../index.css';
 import axios from 'axios';
+
 import {
     Col,
     Navbar,
@@ -8,6 +9,8 @@ import {
     Button,
     Input,
 } from 'react-materialize'
+
+const base_url = window.location.hostname;
 
 export default class Signup extends React.Component {
     constructor(props) {
@@ -29,7 +32,7 @@ export default class Signup extends React.Component {
 
         axios({
             method: 'post',
-            url: 'http://localhost:5000/login',
+            url: 'http://'+base_url+':5000/login',
             auth: {
                 username: this.state.email,
                 password: this.state.password
@@ -50,7 +53,7 @@ export default class Signup extends React.Component {
 
     signup(){
         console.log('coucou?')
-        axios.post('http://localhost:5000/customers',{
+        axios.post('http://'+base_url+':5000/customers',{
             customer_name : this.state.name,
             customer_lastName : this.state.lastName,
             customer_email : this.state.email,

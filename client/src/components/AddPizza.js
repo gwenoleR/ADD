@@ -1,10 +1,13 @@
 import React from 'react';
 import axios from 'axios';
+
 import {
     Input,
     Button
 } from 'react-materialize';
 import cookie from 'react-cookies';
+
+const base_url = window.location.hostname;
 
 export default class AddPizza extends React.Component{
     constructor(props){
@@ -55,7 +58,7 @@ export default class AddPizza extends React.Component{
         console.log('create')
         axios({
             method : 'post',
-            url : 'http://localhost:5000/pizzas',
+            url : 'http://'+base_url+':5000/pizzas',
             data : {
                 "pizza_name" : this.state.name,
                 "pizza_price" : this.state.price,

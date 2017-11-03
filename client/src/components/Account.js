@@ -2,6 +2,7 @@ import React from 'react';
 import '../index.css';
 import axios from 'axios';
 import cookie from 'react-cookies';
+
 import {
     Col,
     Row,
@@ -10,6 +11,8 @@ import {
     Button,
     Input,
 } from 'react-materialize'
+
+const base_url = window.location.hostname;
 
 export default class Account extends React.Component {
     constructor(props) {
@@ -31,7 +34,7 @@ export default class Account extends React.Component {
     getUserInfo(){
         axios({
             method : 'get',
-            url : 'http://localhost:5000/customers/'+this.state.username,
+            url : 'http://'+base_url+':5000/customers/'+this.state.username,
             auth : {
                 username : this.state.username,
                 password : this.state.token
@@ -64,7 +67,7 @@ export default class Account extends React.Component {
     edit(){
         axios({
             method : 'patch',
-            url : 'http://localhost:5000/customers/'+this.state.username,
+            url : 'http://'+base_url+':5000/customers/'+this.state.username,
             auth : {
                 username : this.state.username,
                 password : this.state.token
