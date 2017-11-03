@@ -2,7 +2,6 @@ from .. import app, db, manager, admin, ModelView
 import uuid
 import json
 import datetime
-from sseclient import SSEClient
 from flask import request, make_response
 from server.login import requires_connected
 
