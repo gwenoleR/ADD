@@ -166,7 +166,7 @@ export default class Pizzeria extends React.Component {
                     {this.state.admin ? <NavItem href='/orders'>Orders Lists</NavItem> : <div></div>}
                     {this.state.isAuth ? <NavItem href='#' onClick={()=>{this.setState({basketIsVisible : !this.state.basketIsVisible})}}><div><Icon medium left>shopping_cart</Icon> {this.state.basket.length}</div> </NavItem> : <div></div>}                    
                     <NavItem href='#'>Menu</NavItem>
-                    {this.state.isAuth ? <NavItem href='/' >Hi {this.state.username}</NavItem> : <NavItem href='#' onClick={() => { this.setState({ childVisible: !this.state.childVisible }) }}>Log In</NavItem>}
+                    {this.state.isAuth ? <NavItem href='/account' >Hi {this.state.username}</NavItem> : <NavItem href='#' onClick={() => { this.setState({ childVisible: !this.state.childVisible }) }}>Log In</NavItem>}
                 </Navbar>
                 {this.state.basketIsVisible ?
                 <Basket 
