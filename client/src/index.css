@@ -4,6 +4,7 @@ body {
   font-family: sans-serif;
   /* font-size: 20px; */
 }
+
 .pizza {
   max-width: 300px;
 }
@@ -13,6 +14,19 @@ body {
 .price {
   float: right;
   margin-right: 10px;
+}
+.modal-overlay {
+  position: fixed;
+  z-index: 50;
+  top: -100px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 125%;
+  width: 100%;
+  background: #000;
+  display: none;
+  will-change: opacity;
 }
 .font-black{
   color : #000;
@@ -74,7 +88,27 @@ nav .brand-logo {
 nav ul a {
   font-size: 1.28rem;
 }
+.add-pizza{
+  margin-right: 25%;
+  margin-left: 25%;
+  position: fixed;
+  width: 50%;
+  top: 25%;
+  z-index: 100;
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  padding: 20px;
+}
 
+.add-pizza-button{
+  position: fixed;
+  right: 23px;
+  bottom: 23px;
+  padding-top: 15px;
+  margin-bottom: 0;
+  z-index: 998;
+  padding: 0;
+}
 /*    Timeline    */
 * {
   box-sizing: border-box;

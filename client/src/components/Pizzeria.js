@@ -4,6 +4,8 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import io from 'socket.io-client';
 import Basket from './Basket';
+import AddPizza from './AddPizza';
+import EditPizza from './EditPizza';
 
 import {
     Row,
@@ -27,7 +29,7 @@ export default class Pizzeria extends React.Component {
 
         this.state = {
             pizzas: [],
-            admin: false,
+            admin: true,
             childVisible: false,
             email: "",
             password: "",
@@ -36,7 +38,11 @@ export default class Pizzeria extends React.Component {
             token : "",
             basket : [],
             basketIsVisible : false,
-            totalPrice : 0
+            totalPrice : 0,
+            bgColor : '', //rgba(0, 0, 0, 0.15)
+            formCreateIsVisible : false,
+            formEditIsVisible : false,
+            pizzaToEdit: {}
         };
     }
 
@@ -126,6 +132,34 @@ export default class Pizzeria extends React.Component {
         this.setState({totalPrice : total})
     }
 
+    deletePizza(pizza){
+        axios({
+            url : 'http://localhost:5000/pizzas/'+pizza.pid,
+            method : 'delete'
+        }).then((data)=>{
+            this._getPizzas()
+        })
+        .catch((error)=>{console.log(error)})
+    }
+
+    dismissCreateForm(){
+        this.setState({formCreateIsVisible : false})
+        this.setState({bgColor : ''})
+        this._getPizzas()
+    }
+
+    dismissEditForm(){
+        this.setState({formEditIsVisible : false})
+        this.setState({bgColor : ''})
+        this._getPizzas()
+    }
+
+
+    editPizza(pizza){
+        this.setState({formEditIsVisible : true})
+        this.setState({pizzaToEdit : pizza})
+    }
+
     render() {
         var pizzas = this.state.pizzas;
         var htmlpizza = [];
@@ -155,13 +189,16 @@ export default class Pizzeria extends React.Component {
                         description={pizzas[i]["pizza_description"]} 
                         price={pizzas[i]["pizza_price"]} 
                         id={pizzas[i]['pid']}
+                        basket_press={this.addBasket.bind(this, pizzas[i])}
+                        delete_press={this.deletePizza.bind(this, pizzas[i])}
+                        edit_press={this.editPizza.bind(this, pizzas[i])}
                     />
                 )}
         }
 
 
         return (
-            <div>
+            <div className={this.state.bgColor}>
                 <Navbar brand='TornioPizza' right>
                     {this.state.admin ? <NavItem href='/orders'>Orders Lists</NavItem> : <div></div>}
                     {this.state.isAuth ? <NavItem href='#' onClick={()=>{this.setState({basketIsVisible : !this.state.basketIsVisible})}}><div><Icon medium left>shopping_cart</Icon> {this.state.basket.length}</div> </NavItem> : <div></div>}                    
@@ -212,9 +249,42 @@ export default class Pizzeria extends React.Component {
                         Here's our small slogan.
 	                </Slide>
                 </Slider>
+                
                 <Row className='pizza-list'>
                     {htmlpizza}
+                    { this.state.admin ? 
+                        <Button floating icon='add' className='red add-pizza-button' large  
+                        onClick={()=>{
+                            console.log('coucou')
+                            this.setState({ formCreateIsVisible : true, bgColor : 'overlay'})  
+                        }}></Button>                        
+                        : <div></div>
+                    }
                 </Row>
+                { this.state.formCreateIsVisible ?
+                <div>
+                <AddPizza 
+                createPress={this.dismissCreateForm.bind(this)}
+                cancelPress={this.dismissCreateForm.bind(this)}/>
+                <div className="modal-overlay" style={{zIndex: 50, display: 'block', opacity: 0.5}}></div>
+                </div>
+                : <div></div>}
+
+                { this.state.formEditIsVisible ?
+                <div>
+                <EditPizza 
+                pid={this.state.pizzaToEdit.pid}
+                name={this.state.pizzaToEdit.pizza_name}
+                description={this.state.pizzaToEdit.pizza_description}
+                picture={this.state.pizzaToEdit.pizza_picture}
+                price={this.state.pizzaToEdit.pizza_price}
+                createPress={this.dismissEditForm.bind(this)}
+                cancelPress={this.dismissEditForm.bind(this)}/>
+                <div className="modal-overlay" style={{zIndex: 50, display: 'block', opacity: 0.5}}></div>
+                </div>
+                : <div></div>}
+                
+                
                 
             </div>
         );

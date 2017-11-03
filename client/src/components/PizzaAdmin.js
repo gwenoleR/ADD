@@ -23,9 +23,9 @@ export default class PizzaAdmin extends React.Component {
                         <Input className='with-gap font-black' name='size' type='radio' value='large' label='Large' />
                     </Row> */}
 
-                    <Button waves='light' className="full-button" style={{marginHorizontal:10}}><Icon medium> add_shopping_cart</Icon></Button>
-                    <Button waves='light' className="full-button" style={{marginHorizontal:10, marginTop : 10}}><Icon medium>edit</Icon></Button>
-                    <Button waves='light' className="full-button red" style={{marginHorizontal:10, marginTop : 10}}><Icon medium>delete</Icon></Button> 
+                    <Button waves='light' className="full-button" onClick={this.props.basket_press} style={{marginHorizontal:10}}><Icon medium> add_shopping_cart</Icon></Button>
+                    <Button waves='light' className="full-button" onClick={this.props.edit_press} style={{marginHorizontal:10, marginTop : 10}}><Icon medium>edit</Icon></Button>
+                    <Button waves='light' className="full-button red"  onClick={this.props.delete_press} style={{marginHorizontal:10, marginTop : 10}}><Icon medium>delete</Icon></Button> 
                 </Card>
             </Col>
         );

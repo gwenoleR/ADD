@@ -9,7 +9,7 @@ class Pizzas(db.Model):
     pizza_name = db.Column(db.String(120), nullable=False)
     pizza_description = db.Column(db.String(800), nullable=False)
     pizza_price = db.Column(db.Float, nullable=False)
-    pizza_picture = db.Column(db.String(255), nullable=True)
+    pizza_picture = db.Column(db.String, nullable=True)
     pizza_available = db.Column(db.Boolean)
 
     def create(self, pizza_name, pizza_description, pizza_price, pizza_picture):
@@ -112,4 +112,4 @@ def deletePizzaById(pid):
     else:
         db.session.delete(pizza)
         db.session.commit()
-        return make_response('Deleted', 302)
+        return make_response('Deleted', 200)
