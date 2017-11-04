@@ -1,12 +1,12 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'start' ]
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'start', 'client/' ]
 2 info using npm@3.10.10
 3 info using node@v6.11.5
 4 verbose stack Error: ENOENT: no such file or directory, open '/home/gwenole/Dev/Lapland/ApplicationDesign/package.json'
 4 verbose stack     at Error (native)
 5 verbose cwd /home/gwenole/Dev/Lapland/ApplicationDesign
-6 error Linux 4.10.0-37-generic
-7 error argv "/usr/bin/node" "/usr/bin/npm" "start"
+6 error Linux 4.10.0-38-generic
+7 error argv "/usr/bin/node" "/usr/bin/npm" "start" "client/"
 8 error node v6.11.5
 9 error npm  v3.10.10
 10 error path /home/gwenole/Dev/Lapland/ApplicationDesign/package.json

@@ -38,13 +38,15 @@ def getCustomerByEmail(customer_email):
     customer = Customers.query.filter_by(customer_email = customer_email).first()
 
     if customer is None:
-        return make_response('Not found', 404)
+        return None
 
     return customer
 
 def check_auth(username, password):
     print(username)
     customer = getCustomerByEmail(username)
+    if customer is None:
+        return False
     print(customer.customer_email)
     if username == customer.customer_email and password == customer.customer_password:
         connect = Connected()

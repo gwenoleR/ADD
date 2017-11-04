@@ -227,8 +227,8 @@ export default class Pizzeria extends React.Component {
                     this.state.childVisible
                         ? <div>
                             <Col >
-                                <Input style={{ marginLeft: 10, marginRight: 10 }} type='text' onChange={(change) => {console.log(change.target.value); this.setState({ email: change.target.value }) }} placeholder='Email' />
-                                <Input style={{ marginLeft: 10, marginRight: 10 }} type='password' onChange={(change) => { this.setState({ password: change.target.value }) }} placeholder='Password' />
+                                <Input style={{ marginLeft: 10, marginRight: 10 }} type='text' onChange={(change) => {console.log(change.target.value); this.setState({ email: change.target.value })}} value={this.state.email} placeholder='Email' />
+                                <Input style={{ marginLeft: 10, marginRight: 10 }} type='password' onChange={(change) => { this.setState({ password: change.target.value }) }} value={this.state.password} placeholder='Password' />
                                 <Button style={{ marginLeft: 10, marginRight: 10, marginBottom: 10 }} onClick={this.loginPress.bind(this)}>Log in</Button>
                             </Col>
                             <Col>

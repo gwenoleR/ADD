@@ -61,10 +61,16 @@ def addcustomer():
         return make_response('customer_address is required',401)
     if not 'customer_city' in req  or not req['customer_city']:
         return make_response('customer_city is required',401)
+
+    
     
     customer = Customers()
     customer = customer.create(req['customer_name'],req['customer_lastName'],req['customer_email'],req['customer_password'],req['customer_address'], req['customer_city'])
+    adminExist = Customers.query.filter_by(customer_admin = True).first()
+    if adminExist is None:
+        customer.customer_admin = True
     try:
+        
         db.session.add(customer)
         db.session.commit()
     except:
