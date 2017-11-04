@@ -35,7 +35,6 @@ export default class EditPizza extends React.Component{
     imageUpload = (e) => {
         const file = e.target.files[0];
         this.getBase64(file).then(base64 => {
-          console.log("file stored",base64);
           this.setState({picture : base64})
         });
     };
@@ -56,7 +55,6 @@ export default class EditPizza extends React.Component{
     }
 
     editPizza(){
-        console.log('create')
         axios({
             method : 'patch',
             url : 'http://'+base_url+':5000/pizzas/'+this.props.pid,
@@ -71,11 +69,9 @@ export default class EditPizza extends React.Component{
                 password : this.state.token
             }
         }).then((data)=>{
-            console.log(data)
             this.props.cancelPress()
             
         }).catch((error)=>{
-            console.log(error)
         })
     }
 

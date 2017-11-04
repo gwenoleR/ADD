@@ -45,7 +45,6 @@ export default class OrderList extends React.Component {
             })
             this.showOrder();
         }).catch((error)=>{
-            console.log(error)
         })
     }
 
@@ -62,7 +61,6 @@ export default class OrderList extends React.Component {
                     this.getOrders()
 
                     socket.on('order_received', (data) => {
-                        console.log('new_order');
                         this.getOrders();
                       });
                 }
@@ -81,14 +79,12 @@ export default class OrderList extends React.Component {
             }
         })
             .then((data) => {
-                console.log('connected', data.data)
 
                 cookie.save('user', {'username':data.data.username, 'token': data.data.token})
 
                 this.setState({ childVisible: false, isAuth: true, username : data.data.username, token : data.data.token })
 
                 if(data.data.isAdmin !== 'undefined'){
-                    console.log(data.data.isAdmin)
                     this.setState({admin : data.data.isAdmin})
                     cookie.save('user', {'username':data.data.username, 'token': data.data.token, 'admin' : data.data.isAdmin})
                     
@@ -97,7 +93,6 @@ export default class OrderList extends React.Component {
 
             })
             .catch((error) => {
-                console.log('error', error)
                 this.setState({
                     email: '',
                     password: ''
@@ -127,7 +122,6 @@ export default class OrderList extends React.Component {
                 }
             }).then((data)=>{
                 var order_state = ''
-                console.log(order.order_state)
                 switch (order.order_state){
                     case 'new':
                         order_state = 'new_order'
@@ -145,7 +139,6 @@ export default class OrderList extends React.Component {
                         order_state = 'new'
                         break;
                 }
-                console.log()
                 htmlOrders.push(
                 <div className={"order "+side + " " + order_state+"_before"}>
                     <Order

@@ -81,14 +81,11 @@ export default class Pizzeria extends React.Component {
             }
         })
             .then((data) => {
-                console.log('connected', data.data)
-
                 cookie.save('user', {'username':data.data.username, 'token': data.data.token})
 
                 this.setState({ childVisible: false, isAuth: true, username : data.data.username, token : data.data.token })
 
                 if(data.data.isAdmin !== 'undefined'){
-                    console.log(data.data.isAdmin)
                     this.setState({admin : data.data.isAdmin})
                     cookie.save('user', {'username':data.data.username, 'token': data.data.token, 'admin' : data.data.isAdmin})
                     
@@ -97,7 +94,6 @@ export default class Pizzeria extends React.Component {
 
             })
             .catch((error) => {
-                console.log('error', error)
                 this.setState({
                     email: '',
                     password: ''
@@ -115,7 +111,6 @@ export default class Pizzeria extends React.Component {
     }
 
     order(){
-        console.log(this.state.basket)
         var order = {'customer_username' : this.state.username,'order_pizzas' : JSON.stringify(this.state.basket)}
 
         axios({
@@ -127,9 +122,9 @@ export default class Pizzeria extends React.Component {
             this.setState({basket : []})
             socket.emit('new_order')
         })
-        .catch((error)=>{console.log(error)})
+        .catch((error)=>{
+        })
 
-        console.log(order)
     }
 
     totalBasketPrice(){
@@ -148,7 +143,8 @@ export default class Pizzeria extends React.Component {
         }).then((data)=>{
             this._getPizzas()
         })
-        .catch((error)=>{console.log(error)})
+        .catch((error)=>{
+        })
     }
 
     dismissCreateForm(){
@@ -226,7 +222,7 @@ export default class Pizzeria extends React.Component {
                     this.state.childVisible
                         ? <div>
                             <Col >
-                                <Input style={{ marginLeft: 10, marginRight: 10 }} type='text' onChange={(change) => {console.log(change.target.value); this.setState({ email: change.target.value })}} value={this.state.email} placeholder='Email' />
+                                <Input style={{ marginLeft: 10, marginRight: 10 }} type='text' onChange={(change) => {this.setState({ email: change.target.value })}} value={this.state.email} placeholder='Email' />
                                 <Input style={{ marginLeft: 10, marginRight: 10 }} type='password' onChange={(change) => { this.setState({ password: change.target.value }) }} value={this.state.password} placeholder='Password' />
                                 <Button style={{ marginLeft: 10, marginRight: 10, marginBottom: 10 }} onClick={this.loginPress.bind(this)}>Log in</Button>
                             </Col>
@@ -264,7 +260,6 @@ export default class Pizzeria extends React.Component {
                     { this.state.admin ? 
                         <Button floating icon='add' className='red add-pizza-button' large  
                         onClick={()=>{
-                            console.log('coucou')
                             this.setState({ formCreateIsVisible : true, bgColor : 'overlay'})  
                         }}></Button>                        
                         : <div></div>

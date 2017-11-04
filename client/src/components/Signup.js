@@ -27,8 +27,6 @@ export default class Signup extends React.Component {
     }
 
     loginPress() {
-        console.log('email', this.state.email)
-        console.log('pass', this.state.password)
 
         axios({
             method: 'post',
@@ -39,11 +37,9 @@ export default class Signup extends React.Component {
             }
         })
             .then((data) => {
-                console.log('connected')
                 this.setState({ childVisible: false, isAuth: true })
             })
             .catch((error) => {
-                console.log('error', error)
                 this.setState({
                     email: '',
                     password: ''
@@ -52,7 +48,6 @@ export default class Signup extends React.Component {
     }
 
     signup(){
-        console.log('coucou?')
         axios.post('http://'+base_url+':5000/customers',{
             customer_name : this.state.name,
             customer_lastName : this.state.lastName,
@@ -63,7 +58,6 @@ export default class Signup extends React.Component {
         }).then((data)=>{
             window.location = '/'
         }).catch((error)=>{
-            console.log(error)
         })
     }
 

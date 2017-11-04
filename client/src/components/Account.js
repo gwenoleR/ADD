@@ -103,14 +103,12 @@ export default class Account extends React.Component {
             }
         })
             .then((data) => {
-                console.log('connected', data.data)
 
                 cookie.save('user', {'username':data.data.username, 'token': data.data.token})
 
                 this.setState({ childVisible: false, isAuth: true, username : data.data.username, token : data.data.token })
 
                 if(data.data.isAdmin !== 'undefined'){
-                    console.log(data.data.isAdmin)
                     this.setState({admin : data.data.isAdmin})
                     cookie.save('user', {'username':data.data.username, 'token': data.data.token, 'admin' : data.data.isAdmin})
                     
@@ -119,7 +117,6 @@ export default class Account extends React.Component {
 
             })
             .catch((error) => {
-                console.log('error', error)
                 this.setState({
                     email: '',
                     password: ''
@@ -140,7 +137,7 @@ export default class Account extends React.Component {
                     this.state.childVisible
                         ? <div>
                             <Col >
-                                <Input style={{ marginLeft: 10, marginRight: 10 }} type='text' onChange={(change) => {console.log(change.target.value); this.setState({ email: change.target.value })}} value={this.state.email} placeholder='Email' />
+                                <Input style={{ marginLeft: 10, marginRight: 10 }} type='text' onChange={(change) => {this.setState({ email: change.target.value })}} value={this.state.email} placeholder='Email' />
                                 <Input style={{ marginLeft: 10, marginRight: 10 }} type='password' onChange={(change) => { this.setState({ password: change.target.value }) }} value={this.state.password} placeholder='Password' />
                                 <Button style={{ marginLeft: 10, marginRight: 10, marginBottom: 10 }} onClick={this.loginPress.bind(this)}>Log in</Button>
                             </Col>
