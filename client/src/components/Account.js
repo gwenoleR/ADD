@@ -164,7 +164,7 @@ export default class Account extends React.Component {
                         <h5>City</h5>
                         <Input type='text' placeholder='City' onChange={(change)=>{this.setState({city : change.target.value})}} value={this.state.city}/>
                         <h5>Zip Code</h5>
-                        <Input type='text' placeholder='Zip Code' onChange={(change)=>{this.setState({zip : change.target.value})}} value={this.state.zip}/>
+                        <Input type='number' placeholder='Zip Code' onChange={(change)=>{this.setState({zip : change.target.value})}} value={this.state.zip}/>
                         <h5>Email</h5>
                         <Input type='email' placeholder='Email' onChange={(change)=>{this.setState({email : change.target.value})}} value={this.state.email}/>
                         <Row>

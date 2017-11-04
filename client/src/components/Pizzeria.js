@@ -106,6 +106,7 @@ export default class Pizzeria extends React.Component {
     }
 
     addBasket(pizza){
+        this.setState({basketIsVisible : false})
         this.state.basket.push(pizza)
         var basket = this.state.basket
         this.totalBasketPrice()
@@ -181,6 +182,9 @@ export default class Pizzeria extends React.Component {
         this.setState({formEditIsVisible : true})
         this.setState({pizzaToEdit : pizza})
     }
+    updateBasket(){
+        this.totalBasketPrice()
+    }
 
     render() {
         var pizzas = this.state.pizzas;
@@ -232,6 +236,9 @@ export default class Pizzeria extends React.Component {
                     basket={this.state.basket}
                     order={this.order.bind(this)}
                     totalPrice={this.state.totalPrice}
+                    deletePress={this.totalBasketPrice.bind(this)}
+                    update={this.updateBasket.bind(this)}
+                    
                 />
                 : <div></div>
                 }

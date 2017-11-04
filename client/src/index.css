@@ -55,8 +55,7 @@ img{
   display: inline-block;
   height: 50px;
   font-size: 18px;
-  /* font-weight: 500; */
-  /* color: rgba(0,0,0,0.6); */
+  width: 100%;
   line-height: 50px;
   padding: 0 12px;
   border-radius: 25px;
@@ -87,6 +86,11 @@ nav .brand-logo {
 }
 nav ul a {
   font-size: 1.28rem;
+}
+.order_state{
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 }
 .add-pizza{
   margin-right: 25%;

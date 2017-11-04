@@ -99,6 +99,9 @@ export default class OrderList extends React.Component {
                 })
             })
     }
+    reload(){
+        this.getOrders();
+    }
 
     showOrder(){
         var orders = this.state.orders;
@@ -106,21 +109,10 @@ export default class OrderList extends React.Component {
         var side = 'order-right'
 
         orders.sort(function(a,b){
-            return new Date(b.date) - new Date(a.date);
+            return new Date(b.order_date) - new Date(a.order_date);
           });
-          
-          orders.reverse()
           orders.forEach(function(order) {
             var customer_username = order.customer_username
-
-            axios({
-                url : 'http://'+base_url+':5000/customers/'+customer_username,
-                method : 'get',
-                auth : {
-                    username : this.state.username,
-                    password : this.state.password
-                }
-            }).then((data)=>{
                 var order_state = ''
                 switch (order.order_state){
                     case 'new':
@@ -136,7 +128,7 @@ export default class OrderList extends React.Component {
                         order_state = 'livre_order';
                         break;
                     default:
-                        order_state = 'new'
+                        order_state = 'new_order'
                         break;
                 }
                 htmlOrders.push(
@@ -144,17 +136,22 @@ export default class OrderList extends React.Component {
                     <Order
                         date={order.order_date}
                         pizzas={order.order_pizzas}
-                        address={data.data.customer_address}
-                        city={data.data.customer_city}
+                        username={this.state.username}
+                        password={this.state.token}
+                        customer_username={customer_username}
                         state={order_state}
+                        order_state={order.order_state}
+                        oid={order.oid}
+                        newState={this.reload.bind(this)}
                     />
                 </div>)
                 side === 'order-right' ? side = 'order-left' : side = 'order-right'
-                this.setState({htmlOrders : htmlOrders})
-            })
-
-           
+                
         }, this);
+        this.setState({htmlOrders : htmlOrders}) 
+        
+        
+        
     }
 
     render(){

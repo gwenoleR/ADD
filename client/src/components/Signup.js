@@ -91,7 +91,7 @@ export default class Signup extends React.Component {
                     <Input type='text' label='Last name' onChange={(change)=>{this.setState({lastName : change.target.value})}}/>
                     <Input type='text' label='Adress' onChange={(change)=>{this.setState({address : change.target.value})}}/>
                     <Input type='text' label='City' onChange={(change)=>{this.setState({city : change.target.value})}}/>
-                    <Input type='text' label='Zip Code' onChange={(change)=>{this.setState({zip : change.target.value})}}/>
+                    <Input type='number' label='Zip Code' onChange={(change)=>{this.setState({zip : change.target.value})}}/>
                     <Input type='email' label='Email' onChange={(change)=>{this.setState({email : change.target.value})}}/>
                     <Input type='password' label='Password' onChange={(change)=>{this.setState({password : change.target.value})}}/>
                     <Button onClick={this.signup.bind(this)}>Sign up</Button>
