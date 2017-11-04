@@ -121,6 +121,7 @@ export default class Pizzeria extends React.Component {
             this.setState({basketIsVisible : !this.state.basketIsVisible})
             this.setState({basket : []})
             socket.emit('new_order')
+            this.totalBasketPrice()
         })
         .catch((error)=>{
         })
