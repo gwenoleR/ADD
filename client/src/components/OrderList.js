@@ -32,8 +32,10 @@ export default class OrderList extends React.Component {
     }
 
     getOrders(){
+        var url=''
+        this.state.admin ? url = 'http://'+base_url+':5000/orders' : url = 'http://'+base_url+':5000/orders/user/'+this.state.username
         axios({
-            url : 'http://'+base_url+':5000/orders',
+            url : url,
             method : 'get',
             auth : {
                 username : this.state.username,
@@ -140,7 +142,7 @@ export default class OrderList extends React.Component {
                         password={this.state.token}
                         customer_username={customer_username}
                         state={order_state}
-                        order_state={order.order_state}
+                        isAdmin={this.state.admin}
                         oid={order.oid}
                         newState={this.reload.bind(this)}
                     />
@@ -159,8 +161,8 @@ export default class OrderList extends React.Component {
         return(
             <div>
                 <Navbar brand='TornioPizza' right>
-                {this.state.admin ? <NavItem href='/orders'>Orders Lists</NavItem> : <div></div>}
-                    <NavItem href='/'>Menu</NavItem>
+                {this.state.isAuth ? <NavItem href='/orders'>{this.state.admin ? 'Orders list' : 'My orders'}</NavItem> : <div></div>}
+                <NavItem href='/'>Menu</NavItem>
                     {this.state.isAuth ? <NavItem href='/account' >Hi {this.state.username}</NavItem> : <NavItem href='#' onClick={() => { this.setState({ childVisible: !this.state.childVisible }) }}>Log In</NavItem>}
                 </Navbar>
                 {
@@ -177,7 +179,7 @@ export default class OrderList extends React.Component {
                         </div>
                         : null
                 }
-                {this.state.admin ? 
+                {this.state.isAuth ? 
                 <div className='container'>
                     <div className="timeline">
                         {this.state.htmlOrders}

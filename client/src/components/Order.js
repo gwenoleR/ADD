@@ -101,7 +101,7 @@ export default class Order extends React.Component{
             <ul>{pizzaListHtml}</ul>
             <h5>Addresse de livraison</h5>
             <p>{this.state.customer.customer_address} - {this.state.customer.customer_city} {this.state.customer.customer_zip}</p>
-            {!this.state.livre ? <Button floating large className='red order_state' waves='light' icon={this.state.icon_state} onClick={this.changeState.bind(this)}/> : <div></div>}
+            {!this.state.livre && this.props.isAdmin ? <Button floating large className='red order_state' waves='light' icon={this.state.icon_state} onClick={this.changeState.bind(this)}/> : <div></div>}
             </div>
         )
     }

@@ -69,6 +69,18 @@ def getOrdersById(oid):
     resp = make_response(json.dumps(order.as_dict()), 200)
     return resp
 
+@app.route('/orders/user/<string:username>', methods=['GET'])
+def getOrdersByUsername(username):
+    order_query = Orders.query.filter_by(customer_username = username).all()
+    orders = []
+    if order_query is None:
+        return make_response('Not found', 404)
+    for o in order_query:
+        orders.append(o.as_dict())
+
+    resp = make_response(json.dumps(orders), 200)
+    return resp
+
 
 @app.route('/orders/<string:oid>', methods=['PATCH'])
 def editOrderById(oid):
