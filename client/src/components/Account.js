@@ -28,6 +28,7 @@ export default class Account extends React.Component {
             adress: '',
             city : '',
             change : false,
+            admin : false,
         };
     }
 
@@ -57,6 +58,9 @@ export default class Account extends React.Component {
             this.setState({username : cookies.username, token : cookies.token}, ()=>{
                 if(this.state.username !== "" && this.state.token !== ""){
                     this.setState({isAuth : true})
+                    if(cookies.admin !== 'undefined'){
+                        this.setState({admin : cookies.admin})
+                    }
                     this.getUserInfo()
                     
                 }
@@ -86,14 +90,67 @@ export default class Account extends React.Component {
     }
     logOut(){
         cookie.remove('user')
+        window.location = '/'
     }
+
+    loginPress() {
+        axios({
+            method: 'post',
+            url: 'http://'+base_url+':5000/login',
+            auth: {
+                username: this.state.email,
+                password: this.state.password
+            }
+        })
+            .then((data) => {
+                console.log('connected', data.data)
+
+                cookie.save('user', {'username':data.data.username, 'token': data.data.token})
+
+                this.setState({ childVisible: false, isAuth: true, username : data.data.username, token : data.data.token })
+
+                if(data.data.isAdmin !== 'undefined'){
+                    console.log(data.data.isAdmin)
+                    this.setState({admin : data.data.isAdmin})
+                    cookie.save('user', {'username':data.data.username, 'token': data.data.token, 'admin' : data.data.isAdmin})
+                    
+                }
+                this.getUserInfo()
+
+            })
+            .catch((error) => {
+                console.log('error', error)
+                this.setState({
+                    email: '',
+                    password: ''
+                })
+            })
+    }
+
     render(){
         return(
             <div>
                 <Navbar brand='TornioPizza' right>
+                {this.state.admin ? <NavItem href='/orders'>Orders Lists</NavItem> : <div></div>}
+
                     <NavItem href='/'>Menu</NavItem>
                     {this.state.isAuth ? <NavItem href='#' >Hi {this.state.username}</NavItem> : <NavItem href='#' onClick={() => { this.setState({ childVisible: !this.state.childVisible }) }}>Log In</NavItem>}
                 </Navbar>
+                {
+                    this.state.childVisible
+                        ? <div>
+                            <Col >
+                                <Input style={{ marginLeft: 10, marginRight: 10 }} type='text' onChange={(change) => {console.log(change.target.value); this.setState({ email: change.target.value })}} value={this.state.email} placeholder='Email' />
+                                <Input style={{ marginLeft: 10, marginRight: 10 }} type='password' onChange={(change) => { this.setState({ password: change.target.value }) }} value={this.state.password} placeholder='Password' />
+                                <Button style={{ marginLeft: 10, marginRight: 10, marginBottom: 10 }} onClick={this.loginPress.bind(this)}>Log in</Button>
+                            </Col>
+                            <Col>
+                                <Button node='a' href='/signup' style={{ marginLeft: 10, marginRight: 10, marginBottom: 10 }} onClick={()=>{}}>New ? Sign up !</Button>
+                            </Col>
+                        </div>
+                        : null
+                }
+                { this.state.isAuth ? 
                 <div className='container'>
                     <h1>My account</h1>
                     { this.state.change ? 
@@ -131,6 +188,9 @@ export default class Account extends React.Component {
                     </Col>
                     }
                 </div>
+                :
+                <h4>Please Log In</h4>
+                }
             </div>
         )
     }

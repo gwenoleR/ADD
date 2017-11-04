@@ -64,7 +64,7 @@ export default class Pizzeria extends React.Component {
                     this.setState({isAuth : true})
                 }
                 if(cookies.admin !== 'undefined'){
-                    this.setState({admin : true})
+                    this.setState({admin : cookies.admin})
                 }
             })
         }
@@ -72,9 +72,6 @@ export default class Pizzeria extends React.Component {
     }
 
     loginPress() {
-        console.log('email', this.state.email)
-        console.log('pass', this.state.password)
-
         axios({
             method: 'post',
             url: 'http://'+base_url+':5000/login',
@@ -91,10 +88,12 @@ export default class Pizzeria extends React.Component {
                 this.setState({ childVisible: false, isAuth: true, username : data.data.username, token : data.data.token })
 
                 if(data.data.isAdmin !== 'undefined'){
+                    console.log(data.data.isAdmin)
                     this.setState({admin : data.data.isAdmin})
-                    cookie.save('user', {'username':data.data.username, 'token': data.data.token, 'admin' : true})
+                    cookie.save('user', {'username':data.data.username, 'token': data.data.token, 'admin' : data.data.isAdmin})
                     
                 }
+                
 
             })
             .catch((error) => {

@@ -61,7 +61,7 @@ export default class Signup extends React.Component {
             customer_address : this.state.address,
             customer_city : this.state.city
         }).then((data)=>{
-            window.history(-1)
+            window.location = '/'
         }).catch((error)=>{
             console.log(error)
         })

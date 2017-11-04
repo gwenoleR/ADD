@@ -26,7 +26,8 @@ export default class OrderList extends React.Component {
             token : '',
             isAuth : false,
             orders : [],
-            htmlOrders : []
+            htmlOrders : [],
+            admin : false
         };
     }
 
@@ -55,6 +56,9 @@ export default class OrderList extends React.Component {
             this.setState({username : cookies.username, token : cookies.token}, ()=>{
                 if(this.state.username !== "" && this.state.token !== ""){
                     this.setState({isAuth : true})
+                    if(cookies.admin !== 'undefined'){
+                        this.setState({admin : cookies.admin})
+                    }
                     this.getOrders()
 
                     socket.on('order_received', (data) => {
@@ -68,7 +72,6 @@ export default class OrderList extends React.Component {
     }
 
     loginPress() {
-
         axios({
             method: 'post',
             url: 'http://'+base_url+':5000/login',
@@ -78,8 +81,20 @@ export default class OrderList extends React.Component {
             }
         })
             .then((data) => {
-                console.log('connected')
-                this.setState({ childVisible: false, isAuth: true })
+                console.log('connected', data.data)
+
+                cookie.save('user', {'username':data.data.username, 'token': data.data.token})
+
+                this.setState({ childVisible: false, isAuth: true, username : data.data.username, token : data.data.token })
+
+                if(data.data.isAdmin !== 'undefined'){
+                    console.log(data.data.isAdmin)
+                    this.setState({admin : data.data.isAdmin})
+                    cookie.save('user', {'username':data.data.username, 'token': data.data.token, 'admin' : data.data.isAdmin})
+                    
+                }
+                
+
             })
             .catch((error) => {
                 console.log('error', error)
@@ -154,8 +169,9 @@ export default class OrderList extends React.Component {
         return(
             <div>
                 <Navbar brand='TornioPizza' right>
+                {this.state.admin ? <NavItem href='/orders'>Orders Lists</NavItem> : <div></div>}
                     <NavItem href='/'>Menu</NavItem>
-                    {this.state.isAuth ? <NavItem href='#' >Hi {this.state.username}</NavItem> : <NavItem href='#' onClick={() => { this.setState({ childVisible: !this.state.childVisible }) }}>Log In</NavItem>}
+                    {this.state.isAuth ? <NavItem href='/account' >Hi {this.state.username}</NavItem> : <NavItem href='#' onClick={() => { this.setState({ childVisible: !this.state.childVisible }) }}>Log In</NavItem>}
                 </Navbar>
                 {
                     this.state.childVisible
@@ -171,11 +187,14 @@ export default class OrderList extends React.Component {
                         </div>
                         : null
                 }
+                {this.state.admin ? 
                 <div className='container'>
                     <div className="timeline">
                         {this.state.htmlOrders}
                     </div>
                 </div>
+                : <h4>400 : Unauthorized</h4>
+                }
             </div>
         )
     }
