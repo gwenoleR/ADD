@@ -6,6 +6,7 @@ import io from 'socket.io-client';
 import Basket from './Basket';
 import AddPizza from './AddPizza';
 import EditPizza from './EditPizza';
+import Toast from './Toast';
 
 import {
     Row,
@@ -43,7 +44,10 @@ export default class Pizzeria extends React.Component {
             bgColor : '', //rgba(0, 0, 0, 0.15)
             formCreateIsVisible : false,
             formEditIsVisible : false,
-            pizzaToEdit: {}
+            pizzaToEdit: {},
+            add_toast : false,
+            order_toast : false,
+            error_toast : false,
         };
     }
 
@@ -106,6 +110,10 @@ export default class Pizzeria extends React.Component {
         var basket = this.state.basket
         this.totalBasketPrice()
         this.setState({basket : basket})
+        this.setState({add_toast : true})
+        setTimeout(()=>{
+            this.setState({add_toast : false})
+        },2000)
 
 
     }
@@ -122,8 +130,16 @@ export default class Pizzeria extends React.Component {
             this.setState({basket : []})
             socket.emit('new_order')
             this.totalBasketPrice()
+            this.setState({order_toast : true})
+            setTimeout(()=>{
+                this.setState({order_toast : false})
+            },2000)
         })
         .catch((error)=>{
+            this.setState({error_toast : true})
+            setTimeout(()=>{
+                this.setState({error_toast : false})
+            },2000)
         })
 
     }
@@ -289,7 +305,24 @@ export default class Pizzeria extends React.Component {
                 </div>
                 : <div></div>}
                 
-                
+                { this.state.add_toast ?
+                <Toast
+                    type={'ok-toast'}
+                    text={'Pizza added to cart'}
+                />
+                : <div></div>}
+                { this.state.order_toast ?
+                <Toast
+                    type={'ok-toast'}
+                    text={'Order made successfully'}
+                />
+                : <div></div>}
+                { this.state.error_toast ?
+                <Toast
+                    type={'error-toast'}
+                    text={'An error occurred, please try again later'}
+                />
+                : <div></div>}
                 
             </div>
         );

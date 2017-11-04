@@ -109,6 +109,32 @@ nav ul a {
   z-index: 998;
   padding: 0;
 }
+.toast p{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.toast{
+  position: fixed;
+  right: 23px;
+  top: 23px;
+  z-index: 998;
+  padding : 10px;
+}
+.ok-toast{
+  background-color: #8bc34a;
+}
+.warn-toast{
+  background-color: #ffa726;
+}
+.error-toast{
+  background-color: #ff6e40;
+}
+@media only screen and (max-width: 600px){
+.toast {
+    border-radius: 0;
+}
+}
+
 /*    Timeline    */
 * {
   box-sizing: border-box;

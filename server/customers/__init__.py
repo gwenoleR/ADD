@@ -12,23 +12,25 @@ class Customers(db.Model):
     customer_password = db.Column(db.String(255), nullable=False)
     customer_address = db.Column(db.String, nullable=False)
     customer_city = db.Column(db.String, nullable=False)
+    customer_zip = db.Column(db.String, nullable=False)
     customer_admin = db.Column(db.Boolean, nullable=False)
 
 
-    def create(self, customer_name, customer_lastName, customer_email, customer_password,customer_address,customer_city):
+    def create(self, customer_name, customer_lastName, customer_email, customer_password,customer_address,customer_city,customer_zip):
         self.customer_name = customer_name
         self.customer_lastName = customer_lastName
         self.customer_email = customer_email
         self.customer_password = customer_password
         self.customer_address = customer_address
         self.customer_city = customer_city
+        self.customer_zip = customer_zip
         self.cid = str(uuid.uuid4())
         self.customer_admin = False
 
         return self
 
     def as_dict(self):
-        return {'cid' : self.cid, 'customer_name' : self.customer_name, 'customer_lastName' : self.customer_lastName, 'customer_email' : self.customer_email, 'customer_password' : self.customer_password, 'customer_address' : self.customer_address, 'customer_city' : self.customer_city}
+        return {'cid' : self.cid, 'customer_name' : self.customer_name, 'customer_lastName' : self.customer_lastName, 'customer_email' : self.customer_email, 'customer_password' : self.customer_password, 'customer_address' : self.customer_address, 'customer_city' : self.customer_city, 'customer_zip' : self.customer_zip}
 
 
 
@@ -61,11 +63,13 @@ def addcustomer():
         return make_response('customer_address is required',401)
     if not 'customer_city' in req  or not req['customer_city']:
         return make_response('customer_city is required',401)
+    if not 'customer_zip' in req  or not req['customer_zip']:
+        return make_response('customer_zip is required',401)
 
     
     
     customer = Customers()
-    customer = customer.create(req['customer_name'],req['customer_lastName'],req['customer_email'],req['customer_password'],req['customer_address'], req['customer_city'])
+    customer = customer.create(req['customer_name'],req['customer_lastName'],req['customer_email'],req['customer_password'],req['customer_address'], req['customer_city'], req['customer_zip'])
     adminExist = Customers.query.filter_by(customer_admin = True).first()
     if adminExist is None:
         customer.customer_admin = True
@@ -116,6 +120,9 @@ def editCustomerById(cid):
         updated = True
     if 'customer_city' in req:
         customer.customer_city = req['customer_city']
+        updated = True
+    if 'customer_zip' in req:
+        customer.customer_zip = req['customer_zip']
         updated = True
     if 'customer_admin' in req:
         customer.customer_city = req['customer_admin']

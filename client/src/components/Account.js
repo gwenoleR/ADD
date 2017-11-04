@@ -27,6 +27,7 @@ export default class Account extends React.Component {
             email: '',
             adress: '',
             city : '',
+            zip : '',
             change : false,
             admin : false,
         };
@@ -46,7 +47,8 @@ export default class Account extends React.Component {
                 lastName: data.data.customer_lastName ,
                 email: data.data.customer_email ,
                 adress: data.data.customer_address ,
-                city : data.data.customer_city
+                city : data.data.customer_city,
+                zip : data.data.customer_zip
             })
         })
     }
@@ -81,7 +83,8 @@ export default class Account extends React.Component {
                 customer_lastName: this.state.lastName ,
                 customer_email: this.state.email ,
                 customer_adress: this.state.adress ,
-                customer_city : this.state.city
+                customer_city : this.state.city,
+                customer_zip : this.state.zip
             }
         }).then((data)=>{
             this.getUserInfo()
@@ -152,14 +155,16 @@ export default class Account extends React.Component {
                     <h1>My account</h1>
                     { this.state.change ? 
                     <Col style={{marginLeft : 20, marginRight : 20}}>
-                        <h5>Name</h5>
-                        <Input type='text' placeholder='Name' onChange={(change)=>{this.setState({name : change.target.value})}} value={this.state.name}/>
+                        <h5>First Name</h5>
+                        <Input type='text' placeholder='First Name' onChange={(change)=>{this.setState({name : change.target.value})}} value={this.state.name}/>
                         <h5>Last Name</h5>
                         <Input type='text' placeholder='Last name' onChange={(change)=>{this.setState({lastName : change.target.value})}} value={this.state.lastName}/>
                         <h5>Address</h5>
                         <Input type='text' placeholder='Address' onChange={(change)=>{this.setState({address : change.target.value})}} value={this.state.adress}/>
                         <h5>City</h5>
                         <Input type='text' placeholder='City' onChange={(change)=>{this.setState({city : change.target.value})}} value={this.state.city}/>
+                        <h5>Zip Code</h5>
+                        <Input type='text' placeholder='Zip Code' onChange={(change)=>{this.setState({zip : change.target.value})}} value={this.state.zip}/>
                         <h5>Email</h5>
                         <Input type='email' placeholder='Email' onChange={(change)=>{this.setState({email : change.target.value})}} value={this.state.email}/>
                         <Row>
@@ -169,7 +174,7 @@ export default class Account extends React.Component {
 
                     </Col> :
                     <Col style={{marginLeft : 20, marginRight : 20}}>
-                        <h5>Name</h5>
+                        <h5>First Name</h5>
                         <p>{this.state.name}</p>
                         <h5>Last Name</h5>
                         <p>{this.state.lastName}</p>
@@ -177,6 +182,8 @@ export default class Account extends React.Component {
                         <p>{this.state.adress}</p>
                         <h5>City</h5>
                         <p>{this.state.city}</p>
+                        <h5>Zip Code</h5>
+                        <p>{this.state.zip}</p>
                         <h5>Email</h5>
                         <p>{this.state.email}</p>
                         

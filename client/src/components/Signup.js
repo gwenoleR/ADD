@@ -22,7 +22,8 @@ export default class Signup extends React.Component {
            email : '',
            password : '',
            address : '',
-           city : ''
+           city : '',
+           zip : '',
         };
     }
 
@@ -54,7 +55,8 @@ export default class Signup extends React.Component {
             customer_email : this.state.email,
             customer_password : this.state.password,
             customer_address : this.state.address,
-            customer_city : this.state.city
+            customer_city : this.state.city,
+            customer_zip : this.state.zip
         }).then((data)=>{
             window.location = '/'
         }).catch((error)=>{
@@ -85,12 +87,13 @@ export default class Signup extends React.Component {
             <div className='container'>
                 <h1>Sign up</h1>
                 <Col>
-                    <Input type='text' placeholder='Name' onChange={(change)=>{this.setState({name : change.target.value})}}/>
-                    <Input type='text' placeholder='Last name' onChange={(change)=>{this.setState({lastName : change.target.value})}}/>
-                    <Input type='text' placeholder='Adress' onChange={(change)=>{this.setState({address : change.target.value})}}/>
-                    <Input type='text' placeholder='City' onChange={(change)=>{this.setState({city : change.target.value})}}/>
-                    <Input type='email' placeholder='Email' onChange={(change)=>{this.setState({email : change.target.value})}}/>
-                    <Input type='password' placeholder='Password' onChange={(change)=>{this.setState({password : change.target.value})}}/>
+                    <Input type='text' label='First Name' onChange={(change)=>{this.setState({name : change.target.value})}}/>
+                    <Input type='text' label='Last name' onChange={(change)=>{this.setState({lastName : change.target.value})}}/>
+                    <Input type='text' label='Adress' onChange={(change)=>{this.setState({address : change.target.value})}}/>
+                    <Input type='text' label='City' onChange={(change)=>{this.setState({city : change.target.value})}}/>
+                    <Input type='text' label='Zip Code' onChange={(change)=>{this.setState({zip : change.target.value})}}/>
+                    <Input type='email' label='Email' onChange={(change)=>{this.setState({email : change.target.value})}}/>
+                    <Input type='password' label='Password' onChange={(change)=>{this.setState({password : change.target.value})}}/>
                     <Button onClick={this.signup.bind(this)}>Sign up</Button>
 
                 </Col>
