@@ -1,36 +1,7 @@
-from .. import app, db, manager, admin, ModelView
-import uuid
+from .. import app, db, manager, admin, ModelView, Customers
 import json
 from flask import request, make_response
-
-class Customers(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    cid = db.Column(db.String(40), server_default=str(uuid.uuid4()),unique=True, nullable=False)
-    customer_name = db.Column(db.String(120), nullable=False)
-    customer_lastName = db.Column(db.String(120), nullable=False)
-    customer_email = db.Column(db.String(120), unique=True, nullable=False)
-    customer_password = db.Column(db.String(255), nullable=False)
-    customer_address = db.Column(db.String, nullable=False)
-    customer_city = db.Column(db.String, nullable=False)
-    customer_zip = db.Column(db.String, nullable=False)
-    customer_admin = db.Column(db.Boolean, nullable=False)
-
-
-    def create(self, customer_name, customer_lastName, customer_email, customer_password,customer_address,customer_city,customer_zip):
-        self.customer_name = customer_name
-        self.customer_lastName = customer_lastName
-        self.customer_email = customer_email
-        self.customer_password = customer_password
-        self.customer_address = customer_address
-        self.customer_city = customer_city
-        self.customer_zip = customer_zip
-        self.cid = str(uuid.uuid4())
-        self.customer_admin = False
-
-        return self
-
-    def as_dict(self):
-        return {'cid' : self.cid, 'customer_name' : self.customer_name, 'customer_lastName' : self.customer_lastName, 'customer_email' : self.customer_email, 'customer_password' : self.customer_password, 'customer_address' : self.customer_address, 'customer_city' : self.customer_city, 'customer_zip' : self.customer_zip}
+from server.login import requires_connected
 
 
 
@@ -39,6 +10,7 @@ manager.create_api(Customers, methods=['GET', 'POST'])
 admin.add_view(ModelView(Customers, db.session))
 
 @app.route('/customers', methods=['GET'])
+@requires_connected
 def getCustomers():
     customers = []
     for c in Customers.query.all():
@@ -48,6 +20,7 @@ def getCustomers():
 
 
 @app.route('/customers', methods=['POST'])
+@requires_connected
 def addcustomer():
     req = request.get_json()
 
@@ -83,6 +56,7 @@ def addcustomer():
     return make_response('Created', 201)
 
 @app.route('/customers/<string:username>', methods=['GET'])
+@requires_connected
 def getCustomerById(username):
     customer = Customers.query.filter_by(customer_email = username).first()
 
@@ -95,6 +69,7 @@ def getCustomerById(username):
 
 
 @app.route('/customers/<string:cid>', methods=['PATCH'])
+@requires_connected
 def editCustomerById(cid):
     req = request.get_json()
 

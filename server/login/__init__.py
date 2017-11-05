@@ -1,30 +1,7 @@
-from .. import app, db, manager, admin, ModelView, login_manager, flask_login, flask    
-import uuid
+from .. import app, db, manager, admin, ModelView, login_manager, flask_login, flask, Connected, Customers    
 import json
-import datetime
 from functools import wraps
 from flask import request, make_response
-from server.customers import Customers
-
-class Connected(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    connected_username = db.Column(db.String, nullable=False)
-    connected_token = db.Column(db.String, nullable=False)
-    connected_connection_time = db.Column(db.String, server_default=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), nullable=False)
-    connected_isActive = db.Column(db.Boolean)
-    connected_isAdmin = db.Column(db.Boolean)
-
-    def create(self, connected_username):
-        self.connected_username = connected_username
-        self.connected_token = str(uuid.uuid4())
-        self.connected_connection_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        self.connected_isActive = True
-        self.connected_isActive = False
-
-        return self
-
-    def as_dict(self):
-        return {'connected_username' : self.connected_username, 'connected_token' : self.connected_token, 'connected_connection_time' : self.connected_connection_time, 'connected_isActive' : self.connected_isActive}
 
 @app.route('/connected')
 def getConnected():
@@ -41,6 +18,16 @@ def getCustomerByEmail(customer_email):
         return None
 
     return customer
+
+@app.route('/logout')
+def logout():
+    print(request.authorization.username)
+    connect = Connected.query.filter_by(connected_username = request.authorization.username).all()
+    print(connect)
+    for c in connect:
+        db.session.delete(c)
+    db.session.commit()
+    return make_response('log out success', 200)
 
 def check_auth(username, password):
     print(username)

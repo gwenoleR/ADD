@@ -1,30 +1,7 @@
-from .. import app, db, manager, admin, ModelView, flask_login
-import uuid
+from .. import app, db, manager, admin, ModelView, flask_login, Pizzas
 import json
 from flask import request, make_response
-
-class Pizzas(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    pid = db.Column(db.String(40), server_default=str(uuid.uuid4()),unique=True, nullable=False)
-    pizza_name = db.Column(db.String(120), nullable=False)
-    pizza_description = db.Column(db.String(800), nullable=False)
-    pizza_price = db.Column(db.Float, nullable=False)
-    pizza_picture = db.Column(db.String, nullable=True)
-    pizza_available = db.Column(db.Boolean)
-
-    def create(self, pizza_name, pizza_description, pizza_price, pizza_picture):
-        self.pizza_name = pizza_name
-        self.pizza_description = pizza_description
-        self.pizza_price = pizza_price
-        self.pizza_picture = pizza_picture
-        self.pizza_available = True
-        self.pid = str(uuid.uuid4())
-
-        return self
-
-    def as_dict(self):
-        return {'pid' : self.pid, 'pizza_name' : self.pizza_name, 'pizza_description': self.pizza_description, 'pizza_price' : self.pizza_price, 'pizza_picture' : self.pizza_picture, 'pizza_available' : self.pizza_available}
-
+from server.login import requires_connected
 
 manager.create_api(Pizzas, methods=['GET', 'POST'])
 
@@ -40,6 +17,7 @@ def getPizzas():
 
 
 @app.route('/pizzas', methods=['POST'])
+@requires_connected
 def addPizza():
     req = request.get_json()
 
@@ -73,6 +51,7 @@ def getPizzaById(pid):
     return resp
 
 @app.route('/pizzas/<string:pid>', methods=['PATCH'])
+@requires_connected
 def editPizzaById(pid):
     req = request.get_json()
 
@@ -104,6 +83,7 @@ def editPizzaById(pid):
         return make_response('Nothing to upgrade', 200)
 
 @app.route('/pizzas/<string:pid>', methods=['DELETE'])
+@requires_connected
 def deletePizzaById(pid):
     pizza = Pizzas.query.filter_by(pid = pid).first()
 

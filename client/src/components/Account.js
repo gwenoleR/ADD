@@ -92,6 +92,15 @@ export default class Account extends React.Component {
         })
     }
     logOut(){
+        axios({
+            method: 'get',
+            url: 'http://'+base_url+':5000/logout',
+            auth: {
+                username: this.state.username,
+                password: this.state.token
+            }
+        }).then((data) => console.log(data.data))
+
         cookie.remove('user')
         window.location = '/'
     }
@@ -101,7 +110,7 @@ export default class Account extends React.Component {
             method: 'post',
             url: 'http://'+base_url+':5000/login',
             auth: {
-                username: this.state.email,
+                username: this.state.username,
                 password: this.state.password
             }
         })

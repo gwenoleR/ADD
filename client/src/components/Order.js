@@ -33,7 +33,6 @@ export default class Order extends React.Component{
             this.setState({livre : true})
             icon =  'done_all';
         }
-        console.log(this.state.state_save)
         this.setState({icon_state : icon})
 
     }
@@ -76,6 +75,10 @@ export default class Order extends React.Component{
             url: 'http://'+base_url+':5000/orders/'+this.props.oid,
             data:{
                 order_state : new_state
+            },
+            auth : {
+                username : this.props.username,
+                password : this.props.password
             }
         }).then((data)=>{
             this.setState({state_save : new_state+'_order'})

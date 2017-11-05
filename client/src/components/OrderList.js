@@ -33,13 +33,13 @@ export default class OrderList extends React.Component {
 
     getOrders(){
         var url=''
-        this.state.admin ? url = 'http://'+base_url+':5000/orders' : url = 'http://'+base_url+':5000/orders/user/'+this.state.username
+        this.state.admin ? (url = 'http://'+base_url+':5000/orders') : (url = 'http://'+base_url+':5000/orders/user/'+this.state.username)
         axios({
             url : url,
             method : 'get',
             auth : {
                 username : this.state.username,
-                password : this.state.password
+                password : this.state.token
             }
         }).then((data)=>{
             this.setState({
@@ -50,7 +50,7 @@ export default class OrderList extends React.Component {
         })
     }
 
-    componentDidMount() {
+    componentWillMount() {
         var cookies = cookie.load('user')
 
         if (typeof cookies !== 'undefined'){
@@ -58,9 +58,11 @@ export default class OrderList extends React.Component {
                 if(this.state.username !== "" && this.state.token !== ""){
                     this.setState({isAuth : true})
                     if(cookies.admin !== 'undefined'){
-                        this.setState({admin : cookies.admin})
+                        this.setState({admin : cookies.admin},()=>{
+                            this.getOrders()
+                        })
                     }
-                    this.getOrders()
+                    
 
                     socket.on('order_received', (data) => {
                         this.getOrders();
@@ -133,6 +135,7 @@ export default class OrderList extends React.Component {
                         order_state = 'new_order'
                         break;
                 }
+                
                 htmlOrders.push(
                 <div className={"order "+side + " " + order_state+"_before"}>
                     <Order

@@ -1,36 +1,14 @@
-from .. import app, db, manager, admin, ModelView
-import uuid
+from .. import app, db, manager, admin, ModelView, Orders
 import json
-import datetime
 from flask import request, make_response
 from server.login import requires_connected
-
-
-class Orders(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    oid = db.Column(db.String(40), server_default=str(uuid.uuid4()),unique=True, nullable=False)
-    customer_username = db.Column(db.String(40), nullable=False)
-    order_pizzas = db.Column(db.String, nullable=False)
-    order_state = db.Column(db.String(30), nullable=False, server_default='new')
-    order_date = db.Column(db.String, nullable=False)
-
-    def create(self, customer_username, order_pizzas, order_state):
-        self.customer_username = customer_username
-        self.order_pizzas = order_pizzas
-        self.oid = str(uuid.uuid4())
-        self.order_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-
-        return self
-
-
-    def as_dict(self):
-        return {'oid' : self.oid, 'customer_username' : self.customer_username, 'order_pizzas' : self.order_pizzas, 'order_state' : self.order_state, 'order_date' : self.order_date}
 
 manager.create_api(Orders, methods=['GET', 'POST'])
 
 admin.add_view(ModelView(Orders, db.session))
 
 @app.route('/orders', methods=['GET'])
+@requires_connected
 def getOrders():
     orders = []
     for o in Orders.query.all():
@@ -39,6 +17,7 @@ def getOrders():
     return resp
 
 @app.route('/orders', methods=['POST'])
+@requires_connected
 def addOrder():
     req = request.get_json()
 
@@ -60,6 +39,7 @@ def addOrder():
     return make_response('Created', 201)
 
 @app.route('/orders/<string:oid>', methods=['GET'])
+@requires_connected
 def getOrdersById(oid):
     order = Orders.query.filter_by(oid = oid).first()
 
@@ -70,6 +50,7 @@ def getOrdersById(oid):
     return resp
 
 @app.route('/orders/user/<string:username>', methods=['GET'])
+@requires_connected
 def getOrdersByUsername(username):
     order_query = Orders.query.filter_by(customer_username = username).all()
     orders = []
@@ -83,6 +64,7 @@ def getOrdersByUsername(username):
 
 
 @app.route('/orders/<string:oid>', methods=['PATCH'])
+@requires_connected
 def editOrderById(oid):
     req = request.get_json()
 

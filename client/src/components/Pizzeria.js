@@ -134,7 +134,11 @@ export default class Pizzeria extends React.Component {
         axios({
             url : 'http://'+base_url+':5000/orders',
             method : 'post',
-            data : order
+            data : order,
+            auth : {
+                username : this.state.username,
+                password : this.state.token
+            }
         }).then((data)=>{
             this.setState({basketIsVisible : !this.state.basketIsVisible})
             this.setState({basket : []})
@@ -166,7 +170,11 @@ export default class Pizzeria extends React.Component {
     deletePizza(pizza){
         axios({
             url : 'http://'+base_url+':5000/pizzas/'+pizza.pid,
-            method : 'delete'
+            method : 'delete',
+            auth : {
+                username : this.state.username,
+                password : this.state.token
+            }
         }).then((data)=>{
             this._getPizzas()
         })
