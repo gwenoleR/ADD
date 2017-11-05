@@ -1,7 +1,7 @@
 from .. import app, db, manager, admin, ModelView, flask_login, Pizzas
 import json
 from flask import request, make_response
-from server.login import requires_connected
+from server.login import requires_connected, requires_connected_admin
 
 manager.create_api(Pizzas, methods=['GET', 'POST'])
 
@@ -17,7 +17,7 @@ def getPizzas():
 
 
 @app.route('/pizzas', methods=['POST'])
-@requires_connected
+@requires_connected_admin
 def addPizza():
     req = request.get_json()
 
@@ -51,7 +51,7 @@ def getPizzaById(pid):
     return resp
 
 @app.route('/pizzas/<string:pid>', methods=['PATCH'])
-@requires_connected
+@requires_connected_admin
 def editPizzaById(pid):
     req = request.get_json()
 
@@ -83,7 +83,7 @@ def editPizzaById(pid):
         return make_response('Nothing to upgrade', 200)
 
 @app.route('/pizzas/<string:pid>', methods=['DELETE'])
-@requires_connected
+@requires_connected_admin
 def deletePizzaById(pid):
     pizza = Pizzas.query.filter_by(pid = pid).first()
 

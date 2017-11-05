@@ -95,3 +95,20 @@ def requires_connected(f):
             return authenticate()
         return f(*args, **kwargs)
     return decorated
+
+def check_token_admin(username, token):
+    connect = Connected.query.filter_by(connected_username = username).filter_by(connected_isActive = True).filter_by(connected_isAdmin = True).first()
+    print(connect)
+    if connect is None:
+        return False
+    return connect.connected_username == username and connect.connected_token == token
+  
+def requires_connected_admin(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        print(auth)
+        if not auth or not check_token_admin(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
