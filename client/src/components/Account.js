@@ -99,10 +99,12 @@ export default class Account extends React.Component {
                 username: this.state.username,
                 password: this.state.token
             }
-        }).then((data) => console.log(data.data))
+        }).then((data) => {
+            cookie.remove('user')
+            window.location = '/'
+        })
 
-        cookie.remove('user')
-        window.location = '/'
+        
     }
 
     loginPress() {
