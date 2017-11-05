@@ -48,6 +48,7 @@ export default class Pizzeria extends React.Component {
             add_toast : false,
             order_toast : false,
             error_toast : false,
+            connect_toast : false
         };
     }
 
@@ -106,15 +107,23 @@ export default class Pizzeria extends React.Component {
     }
 
     addBasket(pizza){
-        this.setState({basketIsVisible : false})
-        this.state.basket.push(pizza)
-        var basket = this.state.basket
-        this.totalBasketPrice()
-        this.setState({basket : basket})
-        this.setState({add_toast : true})
-        setTimeout(()=>{
-            this.setState({add_toast : false})
-        },2000)
+        if(this.state.isAuth){
+            this.setState({basketIsVisible : false})
+            this.state.basket.push(pizza)
+            var basket = this.state.basket
+            this.totalBasketPrice()
+            this.setState({basket : basket})
+            this.setState({add_toast : true})
+            setTimeout(()=>{
+                this.setState({add_toast : false})
+            },2000)
+        }
+        else{
+            this.setState({connect_toast : true})
+            setTimeout(()=>{
+                this.setState({connect_toast : false})
+            },2000)
+        }
 
 
     }
@@ -328,6 +337,12 @@ export default class Pizzeria extends React.Component {
                 <Toast
                     type={'error-toast'}
                     text={'An error occurred, please try again later'}
+                />
+                : <div></div>}
+                { this.state.connect_toast ?
+                <Toast
+                    type={'error-toast'}
+                    text={'Please login to place an order'}
                 />
                 : <div></div>}
                 
