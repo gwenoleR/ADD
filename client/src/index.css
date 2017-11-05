@@ -73,10 +73,11 @@ img{
 .row-chip{
   margin-bottom: 0px;
 }
+
 .col-basket{
   z-index: 5;
+  right: 0px;
   max-width: 500px;
-  right: 5em;
   background-color: #fff;
   padding : 20px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -117,12 +118,24 @@ nav ul a {
   margin-top: 5px;
   margin-bottom: 5px;
 }
-.toast{
+
+@media only screen and (max-width: 600px)
+{
+.toast {
   position: fixed;
-  right: 23px;
-  top: 23px;
   z-index: 998;
   padding : 10px;
+}
+}
+@media only screen and (min-width: 600px)
+{
+  .toast{
+    position: fixed;
+    right: 23px;
+    top: 23px;
+    z-index: 998;
+    padding : 10px;
+  }
 }
 .ok-toast{
   background-color: #8bc34a;

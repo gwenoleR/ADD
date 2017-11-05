@@ -48,7 +48,8 @@ export default class Pizzeria extends React.Component {
             add_toast : false,
             order_toast : false,
             error_toast : false,
-            connect_toast : false
+            connect_toast : false,
+            cart_empty_toast : false
         };
     }
 
@@ -129,32 +130,41 @@ export default class Pizzeria extends React.Component {
     }
 
     order(){
-        var order = {'customer_username' : this.state.username,'order_pizzas' : JSON.stringify(this.state.basket)}
-
-        axios({
-            url : 'http://'+base_url+':5000/orders',
-            method : 'post',
-            data : order,
-            auth : {
-                username : this.state.username,
-                password : this.state.token
-            }
-        }).then((data)=>{
+        if(this.state.basket.length > 0){
+            var order = {'customer_username' : this.state.username,'order_pizzas' : JSON.stringify(this.state.basket)}
+            
+                        axios({
+                            url : 'http://'+base_url+':5000/orders',
+                            method : 'post',
+                            data : order,
+                            auth : {
+                                username : this.state.username,
+                                password : this.state.token
+                            }
+                        }).then((data)=>{
+                            this.setState({basketIsVisible : !this.state.basketIsVisible})
+                            this.setState({basket : []})
+                            socket.emit('new_order')
+                            this.totalBasketPrice()
+                            this.setState({order_toast : true})
+                            setTimeout(()=>{
+                                this.setState({order_toast : false})
+                            },2000)
+                        })
+                        .catch((error)=>{
+                            this.setState({error_toast : true})
+                            setTimeout(()=>{
+                                this.setState({error_toast : false})
+                            },2000)
+                        })
+        } 
+        else{
             this.setState({basketIsVisible : !this.state.basketIsVisible})
-            this.setState({basket : []})
-            socket.emit('new_order')
-            this.totalBasketPrice()
-            this.setState({order_toast : true})
+            this.setState({cart_empty_toast : true})
             setTimeout(()=>{
-                this.setState({order_toast : false})
+                this.setState({cart_empty_toast : false})
             },2000)
-        })
-        .catch((error)=>{
-            this.setState({error_toast : true})
-            setTimeout(()=>{
-                this.setState({error_toast : false})
-            },2000)
-        })
+        }   
 
     }
 
@@ -351,6 +361,12 @@ export default class Pizzeria extends React.Component {
                 <Toast
                     type={'error-toast'}
                     text={'Please login to place an order'}
+                />
+                : <div></div>}
+                { this.state.cart_empty_toast ?
+                <Toast
+                    type={'error-toast'}
+                    text={'Your cart is empty'}
                 />
                 : <div></div>}
                 
