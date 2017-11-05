@@ -21,20 +21,16 @@ def getCustomerByEmail(customer_email):
 
 @app.route('/logout')
 def logout():
-    print(request.authorization.username)
     connect = Connected.query.filter_by(connected_username = request.authorization.username).all()
-    print(connect)
     for c in connect:
         db.session.delete(c)
     db.session.commit()
     return make_response('log out success', 200)
 
 def check_auth(username, password):
-    print(username)
     customer = getCustomerByEmail(username)
     if customer is None:
         return False
-    print(customer.customer_email)
     if username == customer.customer_email and password == customer.customer_password:
         connect = Connected()
         connect = connect.create(username)
@@ -72,7 +68,6 @@ def secret_page():
 @app.route('/login', methods=['POST'])
 @requires_auth
 def login():
-    print(request.authorization.username)
     connect = Connected.query.filter_by(connected_username = request.authorization.username).first()
     if connect.connected_isAdmin:
         return make_response(json.dumps({'username' : request.authorization.username, 'token' : connect.connected_token, 'isAdmin' : True}),200)
@@ -90,7 +85,6 @@ def requires_connected(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         auth = request.authorization
-        print(auth)
         if not auth or not check_token(auth.username, auth.password):
             return authenticate()
         return f(*args, **kwargs)
@@ -98,7 +92,6 @@ def requires_connected(f):
 
 def check_token_admin(username, token):
     connect = Connected.query.filter_by(connected_username = username).filter_by(connected_isActive = True).filter_by(connected_isAdmin = True).first()
-    print(connect)
     if connect is None:
         return False
     return connect.connected_username == username and connect.connected_token == token
@@ -107,7 +100,6 @@ def requires_connected_admin(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         auth = request.authorization
-        print(auth)
         if not auth or not check_token_admin(auth.username, auth.password):
             return authenticate()
         return f(*args, **kwargs)
