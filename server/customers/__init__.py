@@ -20,7 +20,6 @@ def getCustomers():
 
 
 @app.route('/customers', methods=['POST'])
-@requires_connected
 def addcustomer():
     req = request.get_json()
 
