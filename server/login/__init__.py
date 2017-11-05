@@ -21,7 +21,9 @@ def getCustomerByEmail(customer_email):
 
 @app.route('/logout')
 def logout():
+    print('username',request.authorization.username)
     connect = Connected.query.filter_by(connected_username = request.authorization.username).all()
+    print('connect', connect)
     for c in connect:
         db.session.delete(c)
     db.session.commit()
