@@ -4,6 +4,7 @@ import Pizzeria from './components/Pizzeria'
 import Signup from './components/Signup'
 import OrderList from './components/OrderList'
 import Account from './components/Account'
+import Customers from './components/Customers'
 
 import {
     BrowserRouter as Router,
@@ -20,6 +21,7 @@ class MainNavigation extends React.Component {
                     <Route path="/signup" component={Signup} />
                     <Route path="/orders" component={OrderList} />
                     <Route path="/account" component={Account} />
+                    <Route path="/customers" component={Customers} />
                 </div>
             </Router>
         )

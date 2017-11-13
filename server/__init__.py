@@ -102,7 +102,7 @@ class Customers(db.Model):
         return self
 
     def as_dict(self):
-        return {'cid' : self.cid, 'customer_name' : self.customer_name, 'customer_lastName' : self.customer_lastName, 'customer_email' : self.customer_email, 'customer_password' : self.customer_password, 'customer_address' : self.customer_address, 'customer_city' : self.customer_city, 'customer_zip' : self.customer_zip}
+        return {'cid' : self.cid, 'customer_name' : self.customer_name, 'customer_lastName' : self.customer_lastName, 'customer_email' : self.customer_email, 'customer_password' : self.customer_password, 'customer_address' : self.customer_address, 'customer_city' : self.customer_city, 'customer_zip' : self.customer_zip, 'customer_admin':self.customer_admin}
 
 class Connected(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -164,6 +164,7 @@ export default class OrderList extends React.Component {
         return(
             <div>
                 <Navbar brand='TornioPizza' right>
+                {this.state.admin ? <NavItem href='/customers'>Customers list</NavItem> : <div></div>} 
                 {this.state.isAuth ? <NavItem href='/orders'>{this.state.admin ? 'Orders list' : 'My orders'}</NavItem> : <div></div>}
                 <NavItem href='/'>Menu</NavItem>
                     {this.state.isAuth ? <NavItem href='/account' >Hi {this.state.username}</NavItem> : <NavItem href='#' onClick={() => { this.setState({ childVisible: !this.state.childVisible }) }}>Log In</NavItem>}

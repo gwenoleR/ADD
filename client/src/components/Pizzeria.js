@@ -253,6 +253,7 @@ export default class Pizzeria extends React.Component {
         return (
             <div className={this.state.bgColor}>
                 <Navbar brand='TornioPizza' right>
+                    {this.state.admin ? <NavItem href='/customers'>Customers list</NavItem> : <div></div>}
                     {this.state.isAuth ? <NavItem href='/orders'>{this.state.admin ? 'Orders list' : 'My orders'}</NavItem> : <div></div>}
                     {this.state.isAuth ? <NavItem href='#' onClick={()=>{this.setState({basketIsVisible : !this.state.basketIsVisible})}}><div><Icon medium left>shopping_cart</Icon> {this.state.basket.length}</div> </NavItem> : <div></div>}                    
                     <NavItem href='#'>Menu</NavItem>

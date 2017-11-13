@@ -142,6 +142,7 @@ export default class Account extends React.Component {
         return(
             <div>
                 <Navbar brand='TornioPizza' right>
+                {this.state.admin ? <NavItem href='/customers'>Customers list</NavItem> : <div></div>} 
                 {this.state.isAuth ? <NavItem href='/orders'>{this.state.admin ? 'Orders list' : 'My orders'}</NavItem> : <div></div>}
                 
                     <NavItem href='/'>Menu</NavItem>
