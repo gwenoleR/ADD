@@ -104,5 +104,5 @@ For the administrator:
 - Show and edit Customers list
 
 #### Links
-[GitHub](https://github.com/gwenoleR/ADD)
-[Live demo](http://pizza.roton.ovh)
+* [GitHub](https://github.com/gwenoleR/ADD)
+* [Live demo](http://pizza.roton.ovh)
