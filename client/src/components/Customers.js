@@ -3,6 +3,7 @@ import '../index.css';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import Customer from './Customer_row';
+import EditCustomer from './EditCustomer';
 
 import {
     Col,
@@ -27,7 +28,9 @@ export default class Customers extends React.Component {
             isAuth : false,
             customers : [],
             htmlCustomers : [],
-            admin : false
+            admin : false,
+            customerToEdit: {},
+            formEditIsVisible : false,
         };
     }
 
@@ -60,6 +63,17 @@ export default class Customers extends React.Component {
                     password: ''
                 })
             })
+    }
+    
+    editCustomer(customer){
+        this.setState({formEditIsVisible : true})
+        this.setState({customerToEdit : customer})
+    }
+
+    cancelEdit(){
+        this.setState({formEditIsVisible : false})
+        this.getCustomers()
+
     }
 
     componentWillMount() {
@@ -103,9 +117,11 @@ export default class Customers extends React.Component {
 
     showCustomers(){
         var cust=[]
+        var _this = this
         this.state.customers.forEach(function(c) {
             var admin = ''
             c.customer_admin ? admin='yes' : admin='no'
+            
             cust.push(
                <Customer
                     customer_name= {c.customer_name}
@@ -116,6 +132,8 @@ export default class Customers extends React.Component {
                     customer_zip={c.customer_zip}
                     customer_admin={admin}
                     cid ={c.cid}
+                    edit_press={_this.editCustomer.bind(_this, c)}
+                    
                />                  
             )   
         } )
@@ -123,7 +141,6 @@ export default class Customers extends React.Component {
     }
 
     render(){
-        
              return(
                  <div>
                      <Navbar brand='TornioPizza' right>
@@ -173,6 +190,23 @@ export default class Customers extends React.Component {
                      </div>
                      : <h4>400 : Unauthorized</h4>
                      }
+                     { this.state.formEditIsVisible ?
+                        <div>
+                        <EditCustomer 
+                        customer_name={this.state.customerToEdit.customer_name}
+                        customer_lastName={this.state.customerToEdit.customer_lastName}
+                        customer_email={this.state.customerToEdit.customer_email}
+                        customer_address={this.state.customerToEdit.customer_address}
+                        customer_city={this.state.customerToEdit.customer_city}
+                        customer_zip={this.state.customerToEdit.customer_zip}
+                        customer_admin={this.state.customerToEdit.customer_admin}
+                        cid={this.state.customerToEdit.cid}
+                        cancel_press = {this.cancelEdit.bind(this)}
+                        />
+                        <div className="modal-overlay" style={{zIndex: 50, display: 'block', opacity: 0.5}}></div>
+                        </div>
+                        : <div></div>
+                    }
                  </div>
              )
          }

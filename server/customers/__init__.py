@@ -99,7 +99,7 @@ def editCustomerById(cid):
         customer.customer_zip = req['customer_zip']
         updated = True
     if 'customer_admin' in req:
-        customer.customer_city = req['customer_admin']
+        customer.customer_admin = req['customer_admin']
         updated = True
 
     if updated:

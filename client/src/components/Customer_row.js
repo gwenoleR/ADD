@@ -18,7 +18,7 @@ export default class Customer extends React.Component{
                 <td>{this.props.customer_address} - {this.props.customer_city} {this.props.customer_zip}</td>
                 <td>{this.props.customer_admin}</td>
                 <td>
-                    <Button><Icon>edit</Icon></Button>
+                    <Button onClick={this.props.edit_press}><Icon>edit</Icon></Button>
                 </td>
             </tr>
         )

@@ -105,6 +105,29 @@ nav ul a {
   padding: 20px;
 }
 
+.edit-customer{
+  margin-right: 25%;
+  margin-left: 25%;
+  position: fixed;
+  width: 50%;
+  top: 25%;
+  z-index: 100;
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  padding: 20px;
+  overflow: auto;
+}
+@media only screen and (max-width: 600px)
+{
+  .edit-customer{
+    top : 10%;
+    bottom:  10%;
+  }
+  .edit-customer button{
+    width: 100%
+  }
+}
+
 .add-pizza-button{
   position: fixed;
   right: 23px;
