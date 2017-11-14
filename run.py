@@ -1,6 +1,5 @@
 from server import app, db
 
-import server.demo # load it!##
 import server.customers
 import server.login
 import server.pizzas

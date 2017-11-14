@@ -1,4 +1,4 @@
-from .. import app, db, manager, admin, ModelView, login_manager, flask_login, flask, Connected, Customers    
+from .. import app, db, login_manager, flask_login, flask, Connected, Customers    
 import json
 from functools import wraps
 from flask import request, make_response

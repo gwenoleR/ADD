@@ -1,4 +1,4 @@
-## Pizza App 
+<!-- ## Pizza App 
 
 ### Mise en place de l'environnement
 
@@ -51,7 +51,7 @@ NOTE : Penser a travailler en environnement virtuel avec virtualenv
     * PATCH : Modifie une pizza
     * DELETE : Supprime une pizza 
 
-### Commandes
+### CommandesSorry to say, your presentation even made more sense
   * Qui a effectué la commande ?
   * Passer une commande
   * Valider une commande 
@@ -64,4 +64,45 @@ NOTE : Penser a travailler en environnement virtuel avec virtualenv
       * GET : Info sur la commande
       * PATCH : Modifie une commande <-- Permet l'annulation
   * /order
-      * ws : Permet d'actualiser la vue admin
+      * ws : Permet d'actualiser la vue admin -->
+
+## Pizza App
+
+#### Technologies used
+
+###### Server-side
+ Python with the [micro-framework Flask](http://flask.pocoo.org/)
+
+ List of libraries used : 
+ * [flask-cors](http://flask-cors.readthedocs.io/en/latest/)
+ * [Flask-SqlAlchemy ](http://flask-sqlalchemy.pocoo.org/2.3/)(DB management)
+ * [flask-socketio ](http://flask-socketio.readthedocs.io/en/latest/)(Real time management)
+ * [flask-login](https://flask-login.readthedocs.io/en/latest/)
+
+###### Client-side
+  [Reactjs](https://reactjs.org/)
+
+  List of libraries used :
+  * [react-router-dom](https://reacttraining.com/react-router/web/example/basic)
+  * [react-cookies](https://www.npmjs.com/package/react-cookies)
+  * [axios ](https://github.com/axios/axios)(HTTP request management)
+  * [react-materialize ](https://react-materialize.github.io/#/)(Graphic library)
+  * [socket.io-client ](https://www.npmjs.com/package/socket.io-client)(Real time management)
+
+#### Features
+  Currently here are the features covered:
+For the customers :
+- Account creation
+- Possibilities to place an order
+- To have access and to be able to modify his information
+- See the state of his orders
+
+For the administrator:
+- Add / Edit / Delete pizza
+- Display of orders, and real-time updating of the list upon receipt of a new order.
+- Modification of the status of an order: New / In preparation / In delivery / Delivered
+- Show and edit Customers list
+
+#### Links
+[GitHub](https://github.com/gwenoleR/ADD)
+[Live demo](http://pizza.roton.ovh)

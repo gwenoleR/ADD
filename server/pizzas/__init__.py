@@ -1,11 +1,8 @@
-from .. import app, db, manager, admin, ModelView, flask_login, Pizzas
+from .. import app, db, flask_login, Pizzas
 import json
 from flask import request, make_response
 from server.login import requires_connected, requires_connected_admin
 
-manager.create_api(Pizzas, methods=['GET', 'POST'])
-
-admin.add_view(ModelView(Pizzas, db.session))
 
 @app.route('/pizzas', methods=['GET'])
 def getPizzas():

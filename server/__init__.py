@@ -25,12 +25,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+db
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = flask_sqlalchemy.SQLAlchemy(app)
 
-manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
-
-admin = flask_admin.Admin(app, name='Pizza App', template_mode='bootstrap3')
-
-ModelView = flask_admin.contrib.sqla.ModelView
-
 class Pizzas(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     pid = db.Column(db.String(40), server_default=str(uuid.uuid4()),unique=True, nullable=False)

@@ -1,13 +1,7 @@
-from .. import app, db, manager, admin, ModelView, Customers
+from .. import app, db, Customers
 import json
 from flask import request, make_response
 from server.login import requires_connected, requires_connected_admin
-
-
-
-manager.create_api(Customers, methods=['GET', 'POST'])
-
-admin.add_view(ModelView(Customers, db.session))
 
 @app.route('/customers', methods=['GET'])
 @requires_connected_admin
